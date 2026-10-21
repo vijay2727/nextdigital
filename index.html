@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lifelong Online Store – Sports, Fitness, Massagers & Kitchen Appliances</title>
+  <meta name="description" content="Shop online at Lifelong for sports, fitness gear, massagers, electronics & kitchen appliances. Trusted by over 10 Million Indian homes. Free delivery & 1-year brand warranty.">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23FF0000'/><text x='50%' y='68%' font-size='60' font-weight='900' fill='white' font-family='sans-serif' text-anchor='middle'>L</text></svg>">
+  
+  <!-- Google Fonts: Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Announcement Bar with Live Countdown -->
+  <div class="announcement-bar" id="announcementBar">
+    <div class="announcement-container">
+      <div class="announcement-content">
+        <span class="announcement-badge">MEGA SALE</span>
+        <span class="announcement-text">CLEARANCE SALE IS LIVE • UP TO 65% OFF + EXTRA 5% PREPAID OFF</span>
+        <span class="announcement-sep">•</span>
+        <div class="announcement-timer">
+          <span class="timer-label">Ends In:</span>
+          <div class="timer-pills">
+            <span class="pill" id="timerDays">02</span><span class="pill-unit">D</span> :
+            <span class="pill" id="timerHours">14</span><span class="pill-unit">H</span> :
+            <span class="pill" id="timerMins">38</span><span class="pill-unit">M</span> :
+            <span class="pill" id="timerSecs">49</span><span class="pill-unit">S</span>
+          </div>
+        </div>
+        <button class="announcement-btn" onclick="scrollToSection('dealsSection')">SHOP DEALS</button>
+      </div>
+      <button class="announcement-close" id="closeAnnouncement" aria-label="Dismiss banner">&times;</button>
+    </div>
+  </div>
+
+  <!-- Main Sticky Header -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-main-row">
+      <div class="container header-container">
+        
+        <!-- Mobile Menu Trigger -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+
+        <!-- Brand Logo -->
+        <a href="#" class="brand-logo" aria-label="Lifelong Home">
+          <div class="logo-graphic">
+            <span class="logo-text">Lifelong</span>
+            <span class="logo-dot">.</span>
+          </div>
+          <span class="logo-tagline">FOR EVERYDAY LIVING</span>
+        </a>
+
+        <!-- Center Search Bar -->
+        <div class="header-search-box">
+          <div class="search-input-wrapper">
+            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="headerSearchInput" placeholder="Search for Treadmills, Air Fryers, Foot Massagers, Kettles..." autocomplete="off">
+            <button class="search-clear-btn" id="searchClearBtn" aria-label="Clear query">&times;</button>
+          </div>
+          
+          <!-- Instant Search Dropdown -->
+          <div class="search-dropdown" id="searchDropdown">
+            <div class="search-dropdown-header">
+              <span>POPULAR SEARCHES</span>
+            </div>
+            <div class="search-tags">
+              <button class="search-tag" onclick="quickSearch('Air Fryer')">Air Fryer</button>
+              <button class="search-tag" onclick="quickSearch('Foot Massager')">Foot Massager</button>
+              <button class="search-tag" onclick="quickSearch('Treadmill')">Treadmill</button>
+              <button class="search-tag" onclick="quickSearch('Mixer Grinder')">Mixer Grinder</button>
+              <button class="search-tag" onclick="quickSearch('Exercise Bike')">Exercise Bike</button>
+            </div>
+            <div class="search-results-list" id="searchResultsList"></div>
+          </div>
+        </div>
+
+        <!-- Right Utility Actions -->
+        <div class="header-actions">
+          <!-- PIN Code Checker -->
+          <button class="header-action-btn pin-code-btn" id="pincodeModalTrigger" title="Check delivery PIN code">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <div class="action-text">
+              <span class="action-small">Deliver to</span>
+              <span class="action-bold" id="currentPincodeLabel">110001 (Delhi)</span>
+            </div>
+          </button>
+
+          <!-- Support Hotline -->
+          <a href="tel:9711558877" class="header-action-btn support-btn" title="Lifelong Customer Care">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            <div class="action-text">
+              <span class="action-small">Helpdesk</span>
+              <span class="action-bold">+91 9711558877</span>
+            </div>
+          </a>
+
+          <!-- Wishlist Button -->
+          <button class="header-action-icon" id="wishlistTrigger" aria-label="Wishlist" title="View Wishlist">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+            <span class="badge-count" id="wishlistCount">0</span>
+          </button>
+
+          <!-- Cart Drawer Button -->
+          <button class="header-action-icon cart-trigger" id="cartTrigger" aria-label="Cart">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            <span class="badge-count" id="cartBadgeCount">0</span>
+            <div class="cart-preview-summary">
+              <span class="cart-total-price" id="cartHeaderTotal">₹0</span>
+            </div>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Secondary Category Navigation Bar -->
+    <nav class="header-nav-bar" id="headerNavBar">
+      <div class="container nav-container">
+        <ul class="nav-links">
+          <li class="nav-item has-dropdown">
+            <a href="#fitness" class="nav-link">
+              Sports & Fitness
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </a>
+            <div class="mega-menu">
+              <div class="mega-column">
+                <h4>Cardio & Training</h4>
+                <a href="#fitness" onclick="filterCategory('Fitness')">Motorized Treadmills</a>
+                <a href="#fitness" onclick="filterCategory('Fitness')">Under-Desk Walking Pads</a>
+                <a href="#fitness" onclick="filterCategory('Fitness')">Exercise Bikes & Spinners</a>
+                <a href="#fitness" onclick="filterCategory('Fitness')">Mini Steppers & Twisters</a>
+              </div>
+              <div class="mega-column">
+                <h4>Strength & Accessories</h4>
+                <a href="#fitness" onclick="filterCategory('Fitness')">Rubber Coated Dumbbells</a>
+                <a href="#fitness" onclick="filterCategory('Fitness')">Push-up & Ab Rollers</a>
+                <a href="#fitness" onclick="filterCategory('Fitness')">Yoga Mats (6mm & 8mm)</a>
+                <a href="#fitness" onclick="filterCategory('Fitness')">Resistance Bands & Tubes</a>
+              </div>
+              <div class="mega-featured">
+                <span class="mega-tag">HOT DEAL</span>
+                <h5>LLTM09 Smart Incline Treadmill</h5>
+                <p>₹16,999 <del>₹35,000</del></p>
+                <button class="btn-micro" onclick="quickAddToCart(1)">Quick Add</button>
+              </div>
+            </div>
+          </li>
+
+          <li class="nav-item has-dropdown">
+            <a href="#kitchen" class="nav-link">
+              Home & Kitchen
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </a>
+            <div class="mega-menu">
+              <div class="mega-column">
+                <h4>Kitchen Appliances</h4>
+                <a href="#kitchen" onclick="filterCategory('Kitchen')">Digital Air Fryers (4L - 6L)</a>
+                <a href="#kitchen" onclick="filterCategory('Kitchen')">Mixer Grinders & Blenders</a>
+                <a href="#kitchen" onclick="filterCategory('Kitchen')">Rapid Boil Electric Kettles</a>
+                <a href="#kitchen" onclick="filterCategory('Kitchen')">Sandwich & Waffle Makers</a>
+                <a href="#kitchen" onclick="filterCategory('Kitchen')">Glass Top Gas Stoves (2/3 Burner)</a>
+              </div>
+              <div class="mega-column">
+                <h4>Home Comfort</h4>
+                <a href="#kitchen" onclick="filterCategory('Kitchen')">Garment Steamers</a>
+                <a href="#kitchen" onclick="filterCategory('Kitchen')">Heavyweight Dry & Steam Irons</a>
+                <a href="#kitchen" onclick="filterCategory('Kitchen')">Handheld Vacuum Cleaners</a>
+              </div>
+              <div class="mega-featured">
+                <span class="mega-tag">BEST SELLER</span>
+                <h5>Air Fryer 4.5L Digital Touch</h5>
+                <p>₹2,699 <del>₹6,000</del></p>
+                <button class="btn-micro" onclick="quickAddToCart(3)">Quick Add</button>
+              </div>
+            </div>
+          </li>
+
+          <li class="nav-item has-dropdown">
+            <a href="#wellness" class="nav-link">
+              Massagers & Wellness
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </a>
+            <div class="mega-menu">
+              <div class="mega-column">
+                <h4>Specialized Massage</h4>
+                <a href="#wellness" onclick="filterCategory('Massagers')">Shiatsu Foot & Calf Massagers</a>
+                <a href="#wellness" onclick="filterCategory('Massagers')">Deep Tissue Percussion Gun</a>
+                <a href="#wellness" onclick="filterCategory('Massagers')">Neck & Shoulder Heated Massagers</a>
+                <a href="#wellness" onclick="filterCategory('Massagers')">Handheld Body Massagers</a>
+              </div>
+              <div class="mega-featured">
+                <span class="mega-tag">TOP RATED</span>
+                <h5>Full Leg, Calf & Foot Massager</h5>
+                <p>₹9,999 <del>₹22,000</del></p>
+                <button class="btn-micro" onclick="quickAddToCart(2)">Quick Add</button>
+              </div>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a href="#grooming" class="nav-link" onclick="filterCategory('Grooming')">Personal Grooming</a>
+          </li>
+
+          <li class="nav-item">
+            <a href="#deals" class="nav-link nav-highlight" onclick="filterCategory('Deals')">
+              <span class="flame-icon">🔥</span> Clearance Sale
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="#warranty" class="nav-link" onclick="showWarrantyModal()">Warranty & Support</a>
+          </li>
+        </ul>
+
+        <div class="nav-trust-callout">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22A200" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Free Express Shipping Across India</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Hero Carousel -->
+  <section class="hero-section">
+    <div class="hero-slider" id="heroSlider">
+      
+      <!-- Slide 1: Fitness -->
+      <div class="hero-slide active" style="--slide-bg: linear-gradient(135deg, #111116 0%, #1e1e2d 50%, #2a0b12 100%);">
+        <div class="container hero-slide-inner">
+          <div class="hero-content">
+            <span class="hero-subhead">FIT INDIA ACTIVE SALE ⚡</span>
+            <h1 class="hero-title">Step Up Your Fitness From Home</h1>
+            <p class="hero-desc">Discover India's most loved motorized treadmills, silent walking pads, and cross trainers. Built for Indian homes, backed by on-site brand warranty.</p>
+            <div class="hero-pricing-badge">
+              <span class="hero-from">Starting from</span>
+              <span class="hero-price">₹12,999</span>
+              <span class="hero-mrp"><del>₹28,000</del> (54% OFF)</span>
+            </div>
+            <div class="hero-ctas">
+              <button class="btn-primary" onclick="filterCategory('Fitness'); scrollToSection('productsSection')">SHOP FITNESS DEALS</button>
+              <button class="btn-outline-white" onclick="openQuickView(1)">VIEW SPECIFICATIONS</button>
+            </div>
+            <div class="hero-features-list">
+              <span>✓ Free Installation In 100+ Cities</span>
+              <span>✓ Up to 3 Years Motor Warranty</span>
+              <span>✓ Zero Cost EMI Available</span>
+            </div>
+          </div>
+          <div class="hero-media">
+            <div class="hero-image-wrapper">
+              <!-- Illustrated Realistic High-End Vector Representation -->
+              <svg class="hero-product-svg" viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Treadmill illustration -->
+                <defs>
+                  <linearGradient id="metalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#3a3d45"/>
+                    <stop offset="50%" stop-color="#1e2025"/>
+                    <stop offset="100%" stop-color="#0f1013"/>
+                  </linearGradient>
+                  <linearGradient id="redAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#FF1A1A"/>
+                    <stop offset="100%" stop-color="#B30000"/>
+                  </linearGradient>
+                </defs>
+                <ellipse cx="250" cy="350" rx="200" ry="30" fill="black" opacity="0.4" filter="blur(15px)"/>
+                <!-- Running deck -->
+                <polygon points="50,290 440,290 400,340 20,340" fill="url(#metalGrad)" stroke="#555" stroke-width="2"/>
+                <!-- Running belt -->
+                <polygon points="80,295 410,295 380,335 50,335" fill="#18181a"/>
+                <!-- Belt track line -->
+                <line x1="70" y1="315" x2="395" y2="315" stroke="url(#redAccent)" stroke-width="3" stroke-dasharray="10 8"/>
+                <!-- Front motor hood -->
+                <path d="M370,290 L460,285 L440,230 L350,235 Z" fill="url(#metalGrad)" stroke="#444"/>
+                <path d="M390,260 L445,258" stroke="url(#redAccent)" stroke-width="4"/>
+                <text x="390" y="278" font-family="Montserrat" font-size="12" font-weight="800" fill="#FFF">LIFELONG</text>
+                <!-- Upright posts -->
+                <polygon points="340,240 370,240 310,90 280,90" fill="url(#metalGrad)" stroke="#333"/>
+                <polygon points="380,240 410,240 350,90 320,90" fill="url(#metalGrad)" stroke="#333"/>
+                <!-- Crossbar & Console -->
+                <polygon points="260,95 365,95 360,75 255,75" fill="url(#metalGrad)" stroke="url(#redAccent)" stroke-width="2"/>
+                <rect x="270" y="65" width="80" height="40" rx="4" fill="#0c0d10" stroke="#444"/>
+                <rect x="275" y="70" width="70" height="18" rx="2" fill="#082338"/>
+                <text x="310" y="83" font-family="monospace" font-size="10" font-weight="bold" fill="#00E5FF" text-anchor="middle">12.8 KM/H</text>
+                <circle cx="285" cy="98" r="4" fill="#FF0000"/>
+                <circle cx="335" cy="98" r="4" fill="#22A200"/>
+                <!-- Handrails -->
+                <path d="M280,90 L210,130 L210,145 L285,100" fill="#2a2c33"/>
+                <!-- Brand Badge -->
+                <g transform="translate(60, 60)">
+                  <circle cx="35" cy="35" r="35" fill="#FF0000" opacity="0.95"/>
+                  <text x="35" y="32" font-family="Montserrat" font-weight="900" font-size="14" fill="#FFF" text-anchor="middle">INDIA'S</text>
+                  <text x="35" y="48" font-family="Montserrat" font-weight="800" font-size="11" fill="#FFEB3B" text-anchor="middle">#1 TREADMILL</text>
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Kitchen -->
+      <div class="hero-slide" style="--slide-bg: linear-gradient(135deg, #181313 0%, #2b1810 50%, #120909 100%);">
+        <div class="container hero-slide-inner">
+          <div class="hero-content">
+            <span class="hero-subhead">KITCHEN BONANZA 🍳</span>
+            <h2 class="hero-title">Guilt-Free Crispy Cooking With 85% Less Oil</h2>
+            <p class="hero-desc">Experience our top-selling Digital Air Fryer range. One-touch rapid hot air circulation ensures perfectly crisp samosas, nuggets, and roasted veggies.</p>
+            <div class="hero-pricing-badge">
+              <span class="hero-from">Starting at just</span>
+              <span class="hero-price">₹2,499</span>
+              <span class="hero-mrp"><del>₹5,999</del> (58% OFF)</span>
+            </div>
+            <div class="hero-ctas">
+              <button class="btn-primary" onclick="filterCategory('Kitchen'); scrollToSection('productsSection')">EXPLORE KITCHEN DEALS</button>
+              <button class="btn-outline-white" onclick="openQuickView(3)">VIEW AIR FRYER</button>
+            </div>
+            <div class="hero-features-list">
+              <span>✓ Touchscreen Presets</span>
+              <span>✓ Non-Stick Dishwasher Safe</span>
+              <span>✓ Free Recipe Book Inside</span>
+            </div>
+          </div>
+          <div class="hero-media">
+            <div class="hero-image-wrapper">
+              <svg class="hero-product-svg" viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="250" cy="340" rx="160" ry="25" fill="black" opacity="0.4" filter="blur(14px)"/>
+                <!-- Air Fryer Main Body -->
+                <path d="M160,110 C160,80 340,80 340,110 L350,290 C350,330 150,330 150,290 Z" fill="#1b1c1e" stroke="#333" stroke-width="2"/>
+                <!-- Glossy highlight -->
+                <path d="M175,120 Q180,270 170,290" stroke="rgba(255,255,255,0.15)" stroke-width="8" stroke-linecap="round"/>
+                <!-- Digital LED Top Panel -->
+                <ellipse cx="250" cy="115" rx="80" ry="22" fill="#080809" stroke="#FF0000" stroke-width="2"/>
+                <text x="250" y="118" font-family="Montserrat" font-weight="900" font-size="14" fill="#00E5FF" text-anchor="middle">200°C | 18 MIN</text>
+                <!-- Drawer Handle & Basket -->
+                <path d="M165,190 L335,190 L330,300 C330,315 170,315 170,300 Z" fill="#25272b" stroke="#444"/>
+                <rect x="235" y="210" width="30" height="70" rx="8" fill="#111" stroke="#FF0000" stroke-width="2"/>
+                <text x="250" y="165" font-family="Montserrat" font-weight="800" font-size="11" fill="#FFFFFF" text-anchor="middle">LIFELONG AIR FRYER</text>
+                <!-- Floating Steam/Crisp badge -->
+                <g transform="translate(320, 140)">
+                  <rect width="100" height="60" rx="8" fill="#FF0000"/>
+                  <text x="50" y="26" font-family="Montserrat" font-weight="800" font-size="11" fill="#FFF" text-anchor="middle">85% LESS</text>
+                  <text x="50" y="44" font-family="Montserrat" font-weight="900" font-size="14" fill="#FFEB3B" text-anchor="middle">OIL</text>
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Massagers & Wellness -->
+      <div class="hero-slide" style="--slide-bg: linear-gradient(135deg, #0e1a1e 0%, #112830 50%, #0d1217 100%);">
+        <div class="container hero-slide-inner">
+          <div class="hero-content">
+            <span class="hero-subhead">DAILY RECHARGE & SPA 💆‍♂️</span>
+            <h2 class="hero-title">Salon-Grade Relief For Tired Feet & Calves</h2>
+            <p class="hero-desc">Alleviate stiffness and boost blood circulation after a tiring day. Features dual kneading rollers, gentle heating therapy, and customized air compression.</p>
+            <div class="hero-pricing-badge">
+              <span class="hero-from">Limited Offer</span>
+              <span class="hero-price">₹4,999</span>
+              <span class="hero-mrp"><del>₹12,000</del> (58% OFF)</span>
+            </div>
+            <div class="hero-ctas">
+              <button class="btn-primary" onclick="filterCategory('Massagers'); scrollToSection('productsSection')">SHOP MASSAGERS</button>
+              <button class="btn-outline-white" onclick="openQuickView(2)">EXPLORE DETAILS</button>
+            </div>
+            <div class="hero-features-list">
+              <span>✓ 4 Kneading Programs</span>
+              <span>✓ Infrared Soothing Heat</span>
+              <span>✓ Removable Washable Liners</span>
+            </div>
+          </div>
+          <div class="hero-media">
+            <div class="hero-image-wrapper">
+              <svg class="hero-product-svg" viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="250" cy="330" rx="170" ry="25" fill="black" opacity="0.4" filter="blur(14px)"/>
+                <!-- Foot massager shell -->
+                <path d="M120,240 C120,160 380,160 380,240 L370,300 C370,330 130,330 130,300 Z" fill="#881515" stroke="#b01f1f" stroke-width="2"/>
+                <ellipse cx="250" cy="220" rx="125" ry="45" fill="#1b1c20"/>
+                <!-- Left Foot Cavity -->
+                <ellipse cx="200" cy="225" rx="35" ry="30" fill="#0d0e10" stroke="#333" stroke-width="2"/>
+                <!-- Right Foot Cavity -->
+                <ellipse cx="300" cy="225" rx="35" ry="30" fill="#0d0e10" stroke="#333" stroke-width="2"/>
+                <!-- Center Touch Control Strip -->
+                <rect x="235" y="180" width="30" height="75" rx="6" fill="#111" stroke="#FF0000"/>
+                <circle cx="250" cy="195" r="4" fill="#00E5FF"/>
+                <circle cx="250" cy="215" r="4" fill="#FF1A1A"/>
+                <circle cx="250" cy="235" r="4" fill="#22A200"/>
+                <text x="250" y="315" font-family="Montserrat" font-weight="900" font-size="13" fill="#FFF" text-anchor="middle">LIFELONG THERAPY</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Slider Navigation Arrows & Indicators -->
+    <div class="slider-controls">
+      <button class="slider-arrow prev" id="heroPrev" aria-label="Previous slide">&#10094;</button>
+      <div class="slider-dots" id="heroDots">
+        <span class="dot active" data-slide="0"></span>
+        <span class="dot" data-slide="1"></span>
+        <span class="dot" data-slide="2"></span>
+      </div>
+      <button class="slider-arrow next" id="heroNext" aria-label="Next slide">&#10095;</button>
+    </div>
+  </section>
+
+  <!-- Trust Markers Bar (Lifelong Brand Promises) -->
+  <section class="trust-bar">
+    <div class="container trust-container">
+      <div class="trust-item">
+        <div class="trust-icon-box">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FF0000" stroke-width="2">
+            <rect x="1" y="3" width="15" height="13"></rect>
+            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+          </svg>
+        </div>
+        <div class="trust-text">
+          <strong>Free Express Shipping</strong>
+          <span>No minimum order value required</span>
+        </div>
+      </div>
+
+      <div class="trust-item">
+        <div class="trust-icon-box">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FF0000" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+        </div>
+        <div class="trust-text">
+          <strong>1 to 3 Year Brand Warranty</strong>
+          <span>Genuine manufacturer warranty</span>
+        </div>
+      </div>
+
+      <div class="trust-item">
+        <div class="trust-icon-box">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FF0000" stroke-width="2">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+        </div>
+        <div class="trust-text">
+          <strong>7 Days Replacement</strong>
+          <span>Hassle-free support for damages</span>
+        </div>
+      </div>
+
+      <div class="trust-item">
+        <div class="trust-icon-box">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FF0000" stroke-width="2">
+            <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+            <line x1="2" y1="10" x2="22" y2="10"></line>
+          </svg>
+        </div>
+        <div class="trust-text">
+          <strong>Secure UPI & Partial COD</strong>
+          <span>100% encrypted safe payments</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Visual Category Showcase Tiles (Circular/Rounded Cards) -->
+  <section class="category-tiles-section">
+    <div class="container">
+      <div class="section-header-compact">
+        <div>
+          <span class="sub-label">EXPLORE POPULAR DEPARTMENTS</span>
+          <h2 class="section-title">Shop By Category</h2>
+        </div>
+        <span class="view-all-link" onclick="filterCategory('All')">View All Categories &rarr;</span>
+      </div>
+
+      <div class="category-grid">
+        <div class="category-card" onclick="filterCategory('Fitness')">
+          <div class="cat-image-circle">
+            <span class="cat-emoji">🏃‍♂️</span>
+          </div>
+          <span class="cat-title">Treadmills & Gym</span>
+          <span class="cat-discount">Up to 60% Off</span>
+        </div>
+
+        <div class="category-card" onclick="filterCategory('Kitchen')">
+          <div class="cat-image-circle">
+            <span class="cat-emoji">🍟</span>
+          </div>
+          <span class="cat-title">Air Fryers</span>
+          <span class="cat-discount">Up to 65% Off</span>
+        </div>
+
+        <div class="category-card" onclick="filterCategory('Massagers')">
+          <div class="cat-image-circle">
+            <span class="cat-emoji">💆‍♂️</span>
+          </div>
+          <span class="cat-title">Foot Massagers</span>
+          <span class="cat-discount">Flat 55% Off</span>
+        </div>
+
+        <div class="category-card" onclick="filterCategory('Kitchen')">
+          <div class="cat-image-circle">
+            <span class="cat-emoji">🌪️</span>
+          </div>
+          <span class="cat-title">Mixer Grinders</span>
+          <span class="cat-discount">Starting ₹1,299</span>
+        </div>
+
+        <div class="category-card" onclick="filterCategory('Fitness')">
+          <div class="cat-image-circle">
+            <span class="cat-emoji">🚴</span>
+          </div>
+          <span class="cat-title">Exercise Bikes</span>
+          <span class="cat-discount">Up to 50% Off</span>
+        </div>
+
+        <div class="category-card" onclick="filterCategory('Grooming')">
+          <div class="cat-image-circle">
+            <span class="cat-emoji">✂️</span>
+          </div>
+          <span class="cat-title">Beard Trimmers</span>
+          <span class="cat-discount">Starting ₹699</span>
+        </div>
+
+        <div class="category-card" onclick="filterCategory('Kitchen')">
+          <div class="cat-image-circle">
+            <span class="cat-emoji">⚡</span>
+          </div>
+          <span class="cat-title">Electric Kettles</span>
+          <span class="cat-discount">Starting ₹599</span>
+        </div>
+
+        <div class="category-card" onclick="filterCategory('Deals')">
+          <div class="cat-image-circle highlight">
+            <span class="cat-emoji">🔥</span>
+          </div>
+          <span class="cat-title">Clearance Box</span>
+          <span class="cat-discount">Extra 10% Off</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deal of the Day Spotlight Strip with Live Countdowns -->
+  <section class="deal-spotlight-section" id="dealsSection">
+    <div class="container">
+      <div class="deal-spotlight-card">
+        <div class="deal-badge-strip">
+          <span class="deal-tag">⚡ FLASH DEAL OF THE DAY</span>
+          <div class="deal-countdown">
+            <span>ENDS IN: </span>
+            <strong id="dealTimer">04h : 18m : 32s</strong>
+          </div>
+        </div>
+        
+        <div class="deal-content-grid">
+          <div class="deal-info">
+            <span class="deal-category">HEALTH & RECOVERY</span>
+            <h3 class="deal-title">Lifelong LLM99 Foot, Calf & Ankle Massager with Heat Therapy</h3>
+            <div class="deal-rating">
+              <div class="stars">★★★★★</div>
+              <span class="rating-num">4.8</span>
+              <span class="rating-count">(3,142 Verified Indian Buyers)</span>
+            </div>
+            <p class="deal-desc">Powerful deep-kneading massage with 4 customized programs, flexible kneading discs, and soothing heat for leg fatigue and diabetic foot relief.</p>
+            
+            <div class="deal-price-row">
+              <span class="deal-current-price">₹4,999</span>
+              <span class="deal-mrp"><del>₹12,000</del></span>
+              <span class="deal-discount-pill">58% OFF</span>
+              <span class="deal-stock-pill">⚡ Only 14 Units Left</span>
+            </div>
+
+            <div class="deal-actions">
+              <button class="btn-primary btn-large" onclick="quickAddToCart(2)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                ADD TO CART
+              </button>
+              <button class="btn-secondary btn-large" onclick="openQuickView(2)">QUICK VIEW</button>
+            </div>
+          </div>
+
+          <div class="deal-visual">
+            <div class="deal-image-box">
+              <div class="deal-watermark">LIFELONG BESTSELLER</div>
+              <svg width="260" height="220" viewBox="0 0 300 240" fill="none">
+                <ellipse cx="150" cy="200" rx="120" ry="20" fill="rgba(0,0,0,0.15)"/>
+                <path d="M40,160 C40,90 260,90 260,160 L250,200 C250,220 50,220 50,200 Z" fill="#881515" stroke="#b01f1f" stroke-width="2"/>
+                <ellipse cx="150" cy="140" rx="90" ry="30" fill="#1b1c20"/>
+                <ellipse cx="110" cy="145" rx="25" ry="20" fill="#0d0e10" stroke="#333"/>
+                <ellipse cx="190" cy="145" rx="25" ry="20" fill="#0d0e10" stroke="#333"/>
+                <rect x="135" y="110" width="30" height="50" rx="4" fill="#111" stroke="#FF0000"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filterable Products Showcase Grid -->
+  <section class="products-section" id="productsSection">
+    <div class="container">
+      
+      <div class="products-header">
+        <div>
+          <span class="sub-label">EXPLORE CURATED CATALOG</span>
+          <h2 class="section-title">Trending Lifelong Bestsellers</h2>
+        </div>
+
+        <!-- Filter Tab Buttons -->
+        <div class="filter-tabs">
+          <button class="tab-btn active" data-category="All" onclick="filterCategory('All')">All Products</button>
+          <button class="tab-btn" data-category="Fitness" onclick="filterCategory('Fitness')">Sports & Fitness</button>
+          <button class="tab-btn" data-category="Kitchen" onclick="filterCategory('Kitchen')">Kitchen Appliances</button>
+          <button class="tab-btn" data-category="Massagers" onclick="filterCategory('Massagers')">Massagers & Wellness</button>
+          <button class="tab-btn" data-category="Grooming" onclick="filterCategory('Grooming')">Personal Grooming</button>
+        </div>
+      </div>
+
+      <!-- Products Grid populated dynamically -->
+      <div class="products-grid" id="productsGrid">
+        <!-- Injected via JavaScript -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Why Choose Lifelong (Brand Highlights & Proof) -->
+  <section class="why-us-section">
+    <div class="container">
+      <div class="why-us-card">
+        <div class="why-us-header">
+          <span class="sub-label-white">THE LIFELONG PROMISE</span>
+          <h2>Built for Modern Indian Households</h2>
+          <p>Over 10 Million satisfied families rely on Lifelong every single day for healthy food, pain-free mobility, and daily convenience.</p>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-box">
+            <span class="stat-number">10M+</span>
+            <span class="stat-text">Happy Indian Homes</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number">10,000+</span>
+            <span class="stat-text">PIN Codes Covered</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number">500+</span>
+            <span class="stat-text">Dedicated Service Centers</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number">4.6★</span>
+            <span class="stat-text">Average Rating on 100k+ Reviews</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Verified Customer Testimonials Carousel -->
+  <section class="reviews-section">
+    <div class="container">
+      <div class="section-header-compact">
+        <div>
+          <span class="sub-label">REAL FEEDBACK</span>
+          <h2 class="section-title">Customer Stories & Reviews</h2>
+        </div>
+        <div class="review-stars-summary">
+          <span class="stars">★★★★★</span>
+          <span>4.7/5 from 48,200+ Verified Buyers</span>
+        </div>
+      </div>
+
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-top">
+            <div class="stars">★★★★★</div>
+            <span class="verified-tag">✓ Verified Purchase</span>
+          </div>
+          <p class="review-quote">"The LLTM09 Treadmill is genuinely one of the best investments I made for my home. Very quiet motor, fits easily in my Gurgaon flat living room, and the installation technician arrived within 24 hours of delivery!"</p>
+          <div class="review-author">
+            <div class="author-avatar">RK</div>
+            <div class="author-meta">
+              <strong>Rahul Kapoor</strong>
+              <span>Gurgaon, Haryana • Treadmill LLTM09</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-top">
+            <div class="stars">★★★★★</div>
+            <span class="verified-tag">✓ Verified Purchase</span>
+          </div>
+          <p class="review-quote">"Lifelong 4.5L Air Fryer is a game changer for samosas and french fries. Crispy outside, soft inside, with literally just a brush of oil. Clean up is super easy with the non-stick basket."</p>
+          <div class="review-author">
+            <div class="author-avatar">PS</div>
+            <div class="author-meta">
+              <strong>Pooja Sharma</strong>
+              <span>Bangalore, Karnataka • Digital Air Fryer</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-top">
+            <div class="stars">★★★★★</div>
+            <span class="verified-tag">✓ Verified Purchase</span>
+          </div>
+          <p class="review-quote">"Bought the foot & calf massager for my mother who suffers from severe heel and leg ache. She uses it twice daily, and her swelling has visibly reduced. Highly recommend Lifelong!"</p>
+          <div class="review-author">
+            <div class="author-avatar">AM</div>
+            <div class="author-meta">
+              <strong>Amit Mehta</strong>
+              <span>Mumbai, Maharashtra • Foot & Calf Massager</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter / Exclusive Discount Section -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-box">
+        <div class="newsletter-content">
+          <span class="newsletter-badge">JOIN THE CLUB</span>
+          <h3>Get ₹200 OFF on Your First Order</h3>
+          <p>Subscribe to receive VIP access to flash sales, fitness tips, new launches, and secret coupon codes.</p>
+        </div>
+        <form class="newsletter-form" id="newsletterForm" onsubmit="handleNewsletterSubmit(event)">
+          <div class="newsletter-input-group">
+            <input type="email" id="newsletterEmail" placeholder="Enter your email address..." required>
+            <button type="submit" class="btn-primary">GET COUPON</button>
+          </div>
+          <span class="newsletter-note">By subscribing you agree to Lifelong's Terms & Privacy Policy. No spam, ever.</span>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comprehensive E-Commerce Footer -->
+  <footer class="site-footer">
+    <div class="container footer-main">
+      <div class="footer-grid">
+        
+        <!-- Column 1: Brand Info -->
+        <div class="footer-col brand-col">
+          <div class="footer-logo">
+            <span class="logo-text">Lifelong</span><span class="logo-dot">.</span>
+          </div>
+          <p class="footer-about">
+            Lifelong Online creates thoughtfully engineered home, kitchen, and fitness equipment tailored for the modern Indian lifestyle. Buy directly with genuine brand warranty.
+          </p>
+          <div class="footer-contact-details">
+            <p><strong>Customer Care:</strong> +91 9711558877</p>
+            <p><strong>Support Email:</strong> customercare@lifelongonline.com</p>
+            <p><strong>Hours:</strong> Mon - Sun: 8:00 AM - 8:00 PM IST</p>
+          </div>
+          <div class="footer-social-links">
+            <a href="#" aria-label="Instagram">IG</a>
+            <a href="#" aria-label="Facebook">FB</a>
+            <a href="#" aria-label="YouTube">YT</a>
+            <a href="#" aria-label="LinkedIn">IN</a>
+          </div>
+        </div>
+
+        <!-- Column 2: Top Categories -->
+        <div class="footer-col">
+          <h4 class="footer-heading">Top Categories</h4>
+          <ul class="footer-links">
+            <li><a href="#fitness" onclick="filterCategory('Fitness')">Motorized Treadmills</a></li>
+            <li><a href="#fitness" onclick="filterCategory('Fitness')">Under-Desk Walking Pads</a></li>
+            <li><a href="#kitchen" onclick="filterCategory('Kitchen')">Digital Air Fryers</a></li>
+            <li><a href="#wellness" onclick="filterCategory('Massagers')">Shiatsu Foot Massagers</a></li>
+            <li><a href="#kitchen" onclick="filterCategory('Kitchen')">Mixer Grinders (750W)</a></li>
+            <li><a href="#grooming" onclick="filterCategory('Grooming')">Beard & Hair Trimmers</a></li>
+            <li><a href="#fitness" onclick="filterCategory('Fitness')">Spin Exercise Bikes</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Customer Care & Policies -->
+        <div class="footer-col">
+          <h4 class="footer-heading">Customer Support</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="showWarrantyModal()">Track Your Order</a></li>
+            <li><a href="#" onclick="showWarrantyModal()">Register Brand Warranty</a></li>
+            <li><a href="#" onclick="showWarrantyModal()">Shipping & Delivery Policy</a></li>
+            <li><a href="#" onclick="showWarrantyModal()">7-Day Replacement Policy</a></li>
+            <li><a href="#" onclick="showWarrantyModal()">Corporate & Bulk Gifting</a></li>
+            <li><a href="#" onclick="showWarrantyModal()">Service Center Locator</a></li>
+            <li><a href="#" onclick="showWarrantyModal()">Terms of Service & Privacy</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Delivery Check & App -->
+        <div class="footer-col">
+          <h4 class="footer-heading">Delivery Coverage</h4>
+          <p class="footer-small">Delivering across 10,000+ PIN codes with zero shipping fees.</p>
+          <div class="footer-pincode-box">
+            <input type="text" id="footerPincodeInput" placeholder="Enter 6-digit PIN code" maxlength="6">
+            <button type="button" onclick="checkFooterPincode()">CHECK</button>
+          </div>
+          <span class="pincode-result" id="footerPincodeResult"></span>
+
+          <h4 class="footer-heading" style="margin-top: 24px;">100% Safe Payments</h4>
+          <div class="payment-methods-strip">
+            <span class="pay-badge">UPI</span>
+            <span class="pay-badge">GPay</span>
+            <span class="pay-badge">PhonePe</span>
+            <span class="pay-badge">RuPay</span>
+            <span class="pay-badge">Visa</span>
+            <span class="pay-badge">Mastercard</span>
+            <span class="pay-badge">COD</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom-strip">
+        <p>© 2026 Lifelong Online Retail Pvt. Ltd. All Rights Reserved. Built with precision for Indian Homes.</p>
+        <p class="fssai-text">CIN: U52590DL2015PTC287042 | Registered in New Delhi, India</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Slide-Out Cart Drawer -->
+  <div class="cart-drawer-overlay" id="cartOverlay" onclick="closeCartDrawer()"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping Cart">
+    <div class="cart-drawer-header">
+      <div class="cart-header-title">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        <h3>Your Shopping Cart (<span id="cartDrawerItemCount">0</span>)</h3>
+      </div>
+      <button class="cart-close-btn" onclick="closeCartDrawer()" aria-label="Close cart">&times;</button>
+    </div>
+
+    <!-- Free Shipping Progress Tracker -->
+    <div class="cart-shipping-tracker">
+      <div class="tracker-text">
+        <span id="trackerMsg">Add ₹499 more to unlock <strong>FREE SHAKER BOTTLE!</strong></span>
+      </div>
+      <div class="tracker-bar">
+        <div class="tracker-fill" id="trackerFill" style="width: 40%;"></div>
+      </div>
+    </div>
+
+    <!-- Cart Items Scrollable Container -->
+    <div class="cart-drawer-items" id="cartDrawerItems">
+      <!-- Populated dynamically via JS -->
+    </div>
+
+    <!-- Cart Footer & Checkout -->
+    <div class="cart-drawer-footer" id="cartDrawerFooter">
+      <div class="cart-coupon-row">
+        <input type="text" id="cartCouponInput" placeholder="Enter coupon code (e.g. SAVE10)" uppercase>
+        <button type="button" onclick="applyCartCoupon()">APPLY</button>
+      </div>
+      <span class="coupon-msg" id="couponMsg"></span>
+
+      <div class="cart-summary-lines">
+        <div class="summary-line">
+          <span>Subtotal</span>
+          <span id="cartDrawerSubtotal">₹0</span>
+        </div>
+        <div class="summary-line" id="discountLine" style="display: none; color: #22A200;">
+          <span>Coupon Discount</span>
+          <span id="cartDrawerDiscount">-₹0</span>
+        </div>
+        <div class="summary-line">
+          <span>Standard Delivery</span>
+          <span class="free-text">FREE</span>
+        </div>
+        <div class="summary-line total-line">
+          <strong>Total Amount</strong>
+          <strong id="cartDrawerGrandTotal">₹0</strong>
+        </div>
+      </div>
+
+      <button class="btn-primary btn-checkout" onclick="proceedToCheckout()">
+        PROCEED TO CHECKOUT &rarr;
+      </button>
+      
+      <div class="checkout-trust-markers">
+        <span>🔒 256-Bit Encrypted</span>
+        <span>🚚 Free Dispatch</span>
+        <span>🛡️ 1-Yr Warranty</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Quick View Product Modal -->
+  <div class="modal-overlay" id="quickViewOverlay" onclick="closeQuickView()"></div>
+  <div class="quick-view-modal" id="quickViewModal">
+    <button class="modal-close-btn" onclick="closeQuickView()" aria-label="Close modal">&times;</button>
+    <div class="modal-body" id="quickViewModalContent">
+      <!-- Dynamically filled by JS -->
+    </div>
+  </div>
+
+  <!-- Pincode Delivery Modal -->
+  <div class="modal-overlay" id="pincodeOverlay" onclick="closePincodeModal()"></div>
+  <div class="pincode-modal" id="pincodeModal">
+    <button class="modal-close-btn" onclick="closePincodeModal()">&times;</button>
+    <div class="pincode-modal-header">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF0000" stroke-width="2">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+        <circle cx="12" cy="10" r="3"></circle>
+      </svg>
+      <h3>Check Delivery & Cash on Delivery</h3>
+      <p>Enter your 6-digit delivery PIN code to verify serviceability and estimated delivery times.</p>
+    </div>
+    <div class="pincode-modal-form">
+      <input type="text" id="modalPincodeInput" placeholder="Enter PIN code (e.g. 110001, 400001)" maxlength="6">
+      <button class="btn-primary" onclick="verifyModalPincode()">VERIFY</button>
+    </div>
+    <div class="pincode-modal-status" id="modalPincodeStatus"></div>
+  </div>
+
+  <!-- Toast Notification Alert -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
