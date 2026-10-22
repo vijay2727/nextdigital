@@ -103,7 +103,7 @@ export const Home = () => {
             </Link>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <img src="/images/Dash Cam.png" alt="NextDigital Car Dashcam" style={{ maxWidth: '100%', maxHeight: '220px', objectFit: 'contain' }} />
+            <img src="/images/Dash Cam.png" alt="DigitalNext Car Dashcam" style={{ maxWidth: '100%', maxHeight: '220px', objectFit: 'contain' }} />
           </div>
         </div>
       </div>

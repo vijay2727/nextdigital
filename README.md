@@ -1,6 +1,6 @@
-# NextDigital India — Official E-Commerce Platform
+# DigitalNext India — Official E-Commerce Platform
 
-A modern, high-performance, responsive e-commerce web application built for **NextDigital India** ([nextdigitalindia.com](https://www.nextdigitalindia.com/)).
+A modern, high-performance, responsive e-commerce web application built for **DigitalNext India** ([digitalnextindia.com](https://www.digitalnextindia.com/)).
 
 ---
 
@@ -33,7 +33,7 @@ Web App runs at: `http://localhost:5173`
 ## Pages & Features
 
 1. **Home (`/`)**:
-   - Hero banner highlighting the **NextDigital HY260 PRO Smart Projector** (1080P Full HD, 4K Supported, Android 11).
+   - Hero banner highlighting the **DigitalNext HY260 PRO Smart Projector** (1080P Full HD, 4K Supported, Android 11).
    - Trust pillars (Free shipping above ₹999, Lowest Price Guarantee, Brand Warranties, After Sales Support).
    - **Flash Deals** showcase with genuine discount calculations.
    - Interactive category tiles.
@@ -57,12 +57,12 @@ Web App runs at: `http://localhost:5173`
 4. **Cart Drawer & Checkout (`/checkout`)**:
    - Slide-out cart drawer with live subtotal calculation.
    - Free shipping indicator progress bar.
-   - Coupon system: Apply code `NEXTEXCLUSIVE1` to get **₹300 OFF** on orders above ₹1,999.
+   - Coupon system: Apply code `DNEXCLUSIVE1` to get **₹300 OFF** on orders above ₹1,999.
    - Delivery address form with validation.
    - Payment options: Cash on Delivery (COD), Direct Bank Transfer/NEFT, and Payment Gateway integration placeholder ready for production API keys.
 
 5. **About Us (`/about`)**:
-   - NextDigital company story, mission, and the famous **"CCTV Wale & Projector Wale"** brand identity.
+   - DigitalNext company story, mission, and the famous **"CCTV Wale & Projector Wale"** brand identity.
    - Verified statistics (5,000+ installations, 50+ institutional partners).
 
 6. **Contact Us (`/contact`)**:

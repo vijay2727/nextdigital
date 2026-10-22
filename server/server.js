@@ -114,7 +114,7 @@ app.post('/api/inquiries', (req, res) => {
 
   res.status(201).json({
     success: true,
-    message: 'Thank you for reaching out! Our team at AtoZ Digital will contact you shortly.',
+    message: 'Thank you for reaching out! Our team at DigitalNext will contact you shortly.',
     inquiryId: inquiry.id
   });
 });
@@ -129,7 +129,7 @@ app.post('/api/checkout', (req, res) => {
   }
 
   const order = {
-    orderId: 'ATZ-' + Math.floor(100000 + Math.random() * 900000),
+    orderId: 'DN-' + Math.floor(100000 + Math.random() * 900000),
     customer,
     items,
     totalAmount,
@@ -151,9 +151,9 @@ app.post('/api/checkout', (req, res) => {
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', service: 'AtoZ Digital India Backend API' });
+  res.json({ status: 'ok', service: 'DigitalNext India Backend API' });
 });
 
 app.listen(PORT, () => {
-  console.log(`AtoZ Digital Backend API running on http://localhost:${PORT}`);
+  console.log(`DigitalNext Backend API running on http://localhost:${PORT}`);
 });

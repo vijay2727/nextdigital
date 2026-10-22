@@ -10,8 +10,8 @@ export const Footer = () => {
           {/* Brand & Overview */}
           <div className="footer-col">
             <div className="brand-logo" style={{ color: '#ffffff', marginBottom: '1rem' }}>
-              <span className="logo-badge">Next</span>
-              <span style={{ color: '#60a5fa' }}>Digital</span>
+              <span className="logo-badge">Digital</span>
+              <span style={{ color: '#60a5fa' }}>Next</span>
             </div>
             <p style={{ color: '#94a3b8', fontSize: '0.9rem', lineHeight: '1.6', marginBottom: '1.2rem' }}>
               Your one-stop destination for CCTV security systems, smart HD projectors, 4K interactive panels, covert spy cameras, and computer storage accessories across India.
@@ -51,7 +51,7 @@ export const Footer = () => {
             <h4>Customer Support</h4>
             <ul className="footer-links">
               <li><Link to="/contact">Request a Quote</Link></li>
-              <li><Link to="/about">About NextDigital</Link></li>
+              <li><Link to="/about">About DigitalNext</Link></li>
               <li><Link to="/shop?deal=true">Today's Deals</Link></li>
               <li><Link to="/contact">Bulk Institutional Orders</Link></li>
               <li><Link to="/contact">After Sales Technical Support</Link></li>
@@ -61,7 +61,7 @@ export const Footer = () => {
 
           {/* Trust & Guarantees */}
           <div className="footer-col">
-            <h4>Why NextDigital</h4>
+            <h4>Why DigitalNext</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '0.5rem' }}>
               <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'flex-start' }}>
                 <ShieldCheck size={20} color="#38bdf8" style={{ marginTop: '2px', flexShrink: 0 }} />
@@ -90,7 +90,7 @@ export const Footer = () => {
 
         {/* Footer Bottom */}
         <div className="footer-bottom">
-          <p>© 2026 NextDigital India. Designed for high performance e-commerce. All rights reserved.</p>
+          <p>© 2026 DigitalNext India. Designed for high performance e-commerce. All rights reserved.</p>
           <div style={{ display: 'flex', gap: '1.5rem' }}>
             <span>Verified Genuine Products</span>
             <span>GST Registered</span>

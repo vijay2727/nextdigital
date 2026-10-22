@@ -145,9 +145,10 @@ input, select, textarea {
   letter-spacing: 1px;
 }
 
-.brand-logo span.digital {
+.brand-logo span.digital,
+.brand-logo span.next {
   color: var(--color-primary);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .search-bar-form {

@@ -10,7 +10,7 @@ export const About = () => {
       <section className="about-hero">
         <div className="container">
           <div style={{ textTransform: 'uppercase', color: '#60a5fa', fontSize: '0.82rem', fontWeight: 700, letterSpacing: '1px', marginBottom: '0.5rem' }}>
-            About NextDigital India
+            About DigitalNext India
           </div>
           <h1>India's Premier Visual and Surveillance Partner</h1>
           <p>
@@ -30,7 +30,7 @@ export const About = () => {
               Dedicated to Precision Tech, Transparent Pricing, and Lifetime Support
             </h2>
             <p style={{ color: '#475569', fontSize: '1rem', lineHeight: '1.7', marginBottom: '1.2rem' }}>
-              Welcome to <strong>NextDigital</strong>, your one-stop destination for all your visual, surveillance, and electronic needs. We are deeply passionate about providing high-quality electronic products, including a comprehensive range of CCTV cameras and accessories, LCD panels and projector equipment, 4K interactive smart flat panels, covert security gear, and high-speed computer storage.
+              Welcome to <strong>DigitalNext</strong>, your one-stop destination for all your visual, surveillance, and electronic needs. We are deeply passionate about providing high-quality electronic products, including a comprehensive range of CCTV cameras and accessories, LCD panels and projector equipment, 4K interactive smart flat panels, covert security gear, and high-speed computer storage.
             </p>
             <p style={{ color: '#475569', fontSize: '1rem', lineHeight: '1.7', marginBottom: '1.5rem' }}>
               Our experienced engineering team is dedicated to offering exceptional customer service, tailored recommendations, and hands-on technical guidance to help educational institutions, commercial offices, and homeowners find the ideal solution.

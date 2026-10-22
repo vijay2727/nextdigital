@@ -5,7 +5,7 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(() => {
     try {
-      const saved = localStorage.getItem('nextdigital_cart') || localStorage.getItem('atoz_cart');
+      const saved = localStorage.getItem('digitalnext_cart') || localStorage.getItem('nextdigital_cart') || localStorage.getItem('atoz_cart');
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -20,7 +20,7 @@ export const CartProvider = ({ children }) => {
 
   useEffect(() => {
     try {
-      localStorage.setItem('nextdigital_cart', JSON.stringify(cartItems));
+      localStorage.setItem('digitalnext_cart', JSON.stringify(cartItems));
     } catch (e) {
       console.error(e);
     }
@@ -78,7 +78,7 @@ export const CartProvider = ({ children }) => {
 
   const applyCouponCode = (code) => {
     const cleanCode = code.trim().toUpperCase();
-    if (cleanCode === 'NEXTEXCLUSIVE1' || cleanCode === 'NEXTDIGITAL1' || cleanCode === 'ATOZEXCLUSIVE1') {
+    if (cleanCode === 'DNEXCLUSIVE1' || cleanCode === 'DIGITALNEXT1' || cleanCode === 'NEXTEXCLUSIVE1' || cleanCode === 'NEXTDIGITAL1' || cleanCode === 'ATOZEXCLUSIVE1') {
       if (subtotal >= 1999) {
         setCoupon(cleanCode);
         setCouponDiscount(300);
