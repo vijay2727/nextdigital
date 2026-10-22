@@ -73,7 +73,6 @@ Web App runs at: `http://localhost:5173`
 
 7. **Customer Authentication & Account (`/login`, `/register`, `/account`)**:
    - Customer Sign In with Email/Mobile number and password toggle.
-   - 1-click **Auto-fill Demo Credentials** (`demo@nextdigital.com` / `password123`) for instant testing.
    - Customer Sign Up with live password strength indicator and default shipping address pre-filling.
    - Forgot Password reset simulation modal.
    - Customer Dashboard (`/account`): My Orders & Shipments history, editable Profile & Shipping Addresses, and VIP Member Benefits.

@@ -31,12 +31,6 @@ export const Login = () => {
     }
   };
 
-  const handleFillDemo = () => {
-    setIdentifier('demo@nextdigital.com');
-    setPassword('password123');
-    setAuthError(null);
-  };
-
   const handleForgotSubmit = (e) => {
     e.preventDefault();
     if (forgotEmail) {
@@ -195,22 +189,6 @@ export const Login = () => {
                 <span>{isLoading ? 'Verifying Account...' : 'Sign In to Account'}</span>
                 <ArrowRight size={18} />
               </button>
-
-              {/* Quick Demo Fill Shortcut */}
-              <div className="auth-demo-box">
-                <div className="demo-box-header">
-                  <span>Developer / Testing Shortcut:</span>
-                </div>
-                <button
-                  type="button"
-                  className="auth-demo-btn"
-                  onClick={handleFillDemo}
-                  id="fill-demo-credentials-btn"
-                >
-                  <UserCheck size={16} />
-                  <span>Auto-fill Demo Credentials (demo@nextdigital.com)</span>
-                </button>
-              </div>
 
               <div className="auth-footer-prompt">
                 <span>New to NextDigital?</span>
