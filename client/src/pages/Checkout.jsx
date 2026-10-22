@@ -99,7 +99,7 @@ export const Checkout = () => {
             Order Placed Successfully!
           </h1>
           <p style={{ color: '#64748b', fontSize: '1rem', marginBottom: '1.5rem' }}>
-            Thank you for choosing DigitalNext India. Your order number is:
+            Thank you for choosing NextDigital India. Your order number is:
           </p>
           <div style={{ display: 'inline-block', background: '#eff6ff', border: '1px dashed #3b82f6', padding: '0.6rem 1.4rem', borderRadius: '8px', fontSize: '1.25rem', fontWeight: 800, color: '#1d4ed8', marginBottom: '2rem' }}>
             {completedOrder.orderId}

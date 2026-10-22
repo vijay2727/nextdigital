@@ -5,7 +5,7 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(() => {
     try {
-      const saved = localStorage.getItem('digitalnext_cart') || localStorage.getItem('nextdigital_cart') || localStorage.getItem('atoz_cart');
+      const saved = localStorage.getItem('nextdigital_cart') || localStorage.getItem('digitalnext_cart') || localStorage.getItem('atoz_cart');
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -20,7 +20,7 @@ export const CartProvider = ({ children }) => {
 
   useEffect(() => {
     try {
-      localStorage.setItem('digitalnext_cart', JSON.stringify(cartItems));
+      localStorage.setItem('nextdigital_cart', JSON.stringify(cartItems));
     } catch (e) {
       console.error(e);
     }

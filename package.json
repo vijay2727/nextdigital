@@ -1,13 +1,13 @@
 {
-  "name": "digitalnext-india-ecommerce",
+  "name": "nextdigital-india-ecommerce",
   "version": "1.0.0",
-  "description": "Full-stack React.js and Node.js/Express e-commerce platform for DigitalNext India",
+  "description": "Full-stack React.js and Node.js/Express e-commerce platform for NextDigital India",
   "scripts": {
     "client": "npm --prefix client run dev",
     "server": "npm --prefix server run dev",
     "build": "npm --prefix client install && npm --prefix client run build",
     "install:all": "npm --prefix client install && npm --prefix server install"
   },
-  "author": "DigitalNext India",
+  "author": "NextDigital India",
   "license": "ISC"
 }
