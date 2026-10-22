@@ -1,21 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { CheckCircle2, ShieldCheck, Truck, CreditCard, Banknote, AlertCircle, ArrowLeft } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { CheckCircle2, ShieldCheck, Truck, CreditCard, Banknote, AlertCircle, ArrowLeft, UserCheck, Lock } from 'lucide-react';
 
 export const Checkout = () => {
   const { cartItems, subtotal, coupon, couponDiscount, shippingCost, grandTotal, clearCart } = useCart();
+  const { user, addCustomerOrder } = useAuth();
   const navigate = useNavigate();
 
   const [customer, setCustomer] = useState({
-    fullName: '',
-    phone: '',
-    email: '',
-    address: '',
-    city: '',
+    fullName: user?.name || '',
+    phone: user?.phone || '',
+    email: user?.email || '',
+    address: user?.address || '',
+    city: user?.city || '',
     state: 'Delhi',
-    pincode: ''
+    pincode: user?.pincode || ''
   });
+
+  useEffect(() => {
+    if (user) {
+      setCustomer(prev => ({
+        ...prev,
+        fullName: prev.fullName || user.name || '',
+        phone: prev.phone || user.phone || '',
+        email: prev.email || user.email || '',
+        address: prev.address || user.address || '',
+        city: prev.city || user.city || '',
+        pincode: prev.pincode || user.pincode || ''
+      }));
+    }
+  }, [user]);
 
   const [paymentMethod, setPaymentMethod] = useState('COD');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -60,11 +76,12 @@ export const Checkout = () => {
       const data = await res.json();
       if (res.ok && data.success) {
         setCompletedOrder(data.order);
+        addCustomerOrder(data.order);
         clearCart();
       } else {
         // Fallback local order
         const mockOrder = {
-          orderId: 'DN-' + Math.floor(100000 + Math.random() * 900000),
+          orderId: 'ND-' + Math.floor(100000 + Math.random() * 900000),
           customer,
           items: payload.items,
           totalAmount: grandTotal,
@@ -72,11 +89,12 @@ export const Checkout = () => {
           createdAt: new Date().toISOString()
         };
         setCompletedOrder(mockOrder);
+        addCustomerOrder(mockOrder);
         clearCart();
       }
     } catch {
       const mockOrder = {
-        orderId: 'DN-' + Math.floor(100000 + Math.random() * 900000),
+        orderId: 'ND-' + Math.floor(100000 + Math.random() * 900000),
         customer,
         items: payload.items,
         totalAmount: grandTotal,
@@ -84,6 +102,7 @@ export const Checkout = () => {
         createdAt: new Date().toISOString()
       };
       setCompletedOrder(mockOrder);
+      addCustomerOrder(mockOrder);
       clearCart();
     } finally {
       setIsSubmitting(false);
@@ -167,6 +186,29 @@ export const Checkout = () => {
           <div className="checkout-grid">
             {/* Left Column: Delivery & Payment Details */}
             <div>
+              {/* Logged in or Guest Banner */}
+              {user ? (
+                <div style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', padding: '0.8rem 1.2rem', borderRadius: '10px', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: '#065f46', fontSize: '0.88rem' }}>
+                    <UserCheck size={18} color="#059669" />
+                    <span>Signed in as <strong>{user.name}</strong> ({user.email})</span>
+                  </div>
+                  <Link to="/account" style={{ color: '#047857', fontSize: '0.82rem', fontWeight: 600, textDecoration: 'underline' }}>
+                    My Account
+                  </Link>
+                </div>
+              ) : (
+                <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', padding: '0.8rem 1.2rem', borderRadius: '10px', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: '#1e40af', fontSize: '0.88rem' }}>
+                    <Lock size={16} color="#2563eb" />
+                    <span>Already a NextDigital customer?</span>
+                  </div>
+                  <Link to="/login?redirect=/checkout" style={{ color: '#1d4ed8', fontSize: '0.84rem', fontWeight: 700 }}>
+                    Sign In for Faster Checkout →
+                  </Link>
+                </div>
+              )}
+
               {/* Shipping Address */}
               <div className="checkout-box">
                 <h3>1. Delivery Address</h3>

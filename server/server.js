@@ -149,6 +149,134 @@ app.post('/api/checkout', (req, res) => {
   });
 });
 
+// 7. Customer Authentication Store & Endpoints
+const customers = [
+  {
+    id: 'CUST-1001',
+    name: 'Ramesh Sharma',
+    email: 'demo@nextdigital.com',
+    phone: '9876543210',
+    password: 'password123',
+    address: 'B-42, Sector 62',
+    city: 'Noida',
+    pincode: '201301',
+    createdAt: new Date().toISOString()
+  }
+];
+
+// Register Customer
+app.post('/api/auth/register', (req, res) => {
+  const { name, email, phone, password, address, city, pincode } = req.body;
+
+  if (!name || !email || !password) {
+    return res.status(400).json({ success: false, message: 'Name, email, and password are required' });
+  }
+
+  const normalizedEmail = email.trim().toLowerCase();
+  const existing = customers.find(c => c.email.toLowerCase() === normalizedEmail);
+  if (existing) {
+    return res.status(409).json({ success: false, message: 'An account with this email address already exists' });
+  }
+
+  const newCustomer = {
+    id: 'CUST-' + Date.now(),
+    name: name.trim(),
+    email: normalizedEmail,
+    phone: phone ? phone.trim() : '',
+    password, // Demo in-memory store
+    address: address ? address.trim() : '',
+    city: city ? city.trim() : '',
+    pincode: pincode ? pincode.trim() : '',
+    createdAt: new Date().toISOString()
+  };
+
+  customers.push(newCustomer);
+  console.log(`[CUSTOMER REGISTERED] ${newCustomer.name} (${newCustomer.email})`);
+
+  // Return user without password
+  const { password: _, ...userWithoutPass } = newCustomer;
+  res.status(201).json({
+    success: true,
+    message: 'Account created successfully! Welcome to NextDigital.',
+    user: userWithoutPass,
+    token: 'jwt-mock-token-' + newCustomer.id
+  });
+});
+
+// Login Customer
+app.post('/api/auth/login', (req, res) => {
+  const { identifier, password } = req.body;
+
+  if (!identifier || !password) {
+    return res.status(400).json({ success: false, message: 'Email/Phone and password are required' });
+  }
+
+  const cleanIdent = identifier.trim().toLowerCase();
+  const customer = customers.find(c => 
+    c.email.toLowerCase() === cleanIdent || 
+    (c.phone && c.phone.replace(/\D/g, '') === cleanIdent.replace(/\D/g, ''))
+  );
+
+  if (!customer) {
+    return res.status(401).json({ success: false, message: 'No account found with this email or phone number' });
+  }
+
+  if (customer.password !== password) {
+    return res.status(401).json({ success: false, message: 'Incorrect password. Please try again.' });
+  }
+
+  console.log(`[CUSTOMER LOGGED IN] ${customer.name} (${customer.email})`);
+
+  const { password: _, ...userWithoutPass } = customer;
+  res.json({
+    success: true,
+    message: 'Welcome back, ' + customer.name + '!',
+    user: userWithoutPass,
+    token: 'jwt-mock-token-' + customer.id
+  });
+});
+
+// Update Profile
+app.put('/api/auth/profile', (req, res) => {
+  const { userId, name, phone, address, city, pincode } = req.body;
+  const customer = customers.find(c => c.id === userId);
+
+  if (!customer) {
+    return res.status(404).json({ success: false, message: 'Customer not found' });
+  }
+
+  if (name) customer.name = name.trim();
+  if (phone) customer.phone = phone.trim();
+  if (address !== undefined) customer.address = address.trim();
+  if (city !== undefined) customer.city = city.trim();
+  if (pincode !== undefined) customer.pincode = pincode.trim();
+
+  const { password: _, ...userWithoutPass } = customer;
+  res.json({
+    success: true,
+    message: 'Profile updated successfully',
+    user: userWithoutPass
+  });
+});
+
+// Get Customer Orders
+app.get('/api/customer/orders', (req, res) => {
+  const { email, phone } = req.query;
+  if (!email && !phone) {
+    return res.status(400).json({ success: false, message: 'Email or phone required' });
+  }
+
+  const customerOrders = orders.filter(o => 
+    (email && o.customer?.email?.toLowerCase() === email.toLowerCase()) ||
+    (phone && o.customer?.phone?.replace(/\D/g, '') === phone.replace(/\D/g, ''))
+  );
+
+  res.json({
+    success: true,
+    orders: customerOrders
+  });
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', service: 'NextDigital India Backend API' });

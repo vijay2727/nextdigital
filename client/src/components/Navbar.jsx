@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, Search, Phone, ShieldCheck, Menu, X } from 'lucide-react';
+import { ShoppingBag, Search, Phone, ShieldCheck, Menu, X, User } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 export const Navbar = () => {
   const { totalItemsCount, setIsDrawerOpen } = useCart();
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
@@ -57,6 +59,26 @@ export const Navbar = () => {
                 <a href="tel:+919999593931" className="phone-num">+91 99995 93931</a>
               </div>
             </div>
+
+            {/* Customer Account Access */}
+            <Link
+              to={user ? '/account' : '/login'}
+              className="account-pill-trigger"
+              id="header-account-button"
+              aria-label="Customer Account"
+            >
+              <div className="account-icon-circle">
+                <User size={18} />
+              </div>
+              <div>
+                <div style={{ fontSize: '0.70rem', textTransform: 'uppercase', letterSpacing: '0.5px', color: '#64748b', fontWeight: 600 }}>
+                  {user ? 'My Account' : 'Welcome'}
+                </div>
+                <div style={{ fontSize: '0.86rem', fontWeight: 700, color: 'var(--color-heading)', whiteSpace: 'nowrap' }}>
+                  {user ? `Hi, ${user.name ? user.name.split(' ')[0] : 'Customer'}` : 'Sign In'}
+                </div>
+              </div>
+            </Link>
 
             <button
               className="cart-btn-trigger"

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { CartProvider, useCart } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { CartDrawer } from './components/CartDrawer';
@@ -10,6 +11,9 @@ import { ProductDetail } from './pages/ProductDetail';
 import { About } from './pages/About';
 import { Contact } from './pages/Contact';
 import { Checkout } from './pages/Checkout';
+import { Login } from './pages/Login';
+import { Register } from './pages/Register';
+import { Account } from './pages/Account';
 import { CheckCircle2 } from 'lucide-react';
 
 const ScrollToTop = () => {
@@ -34,25 +38,30 @@ const ToastNotification = () => {
 export default function App() {
   return (
     <BrowserRouter>
-      <CartProvider>
-        <ScrollToTop />
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-          <Navbar />
-          <div style={{ flex: 1 }}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/product/:id" element={<ProductDetail />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/checkout" element={<Checkout />} />
-            </Routes>
+      <AuthProvider>
+        <CartProvider>
+          <ScrollToTop />
+          <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+            <Navbar />
+            <div style={{ flex: 1 }}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/product/:id" element={<ProductDetail />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/account" element={<Account />} />
+              </Routes>
+            </div>
+            <Footer />
+            <CartDrawer />
+            <ToastNotification />
           </div>
-          <Footer />
-          <CartDrawer />
-          <ToastNotification />
-        </div>
-      </CartProvider>
+        </CartProvider>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
