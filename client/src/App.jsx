@@ -15,6 +15,7 @@ import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Account } from './pages/Account';
 import { CheckCircle2 } from 'lucide-react';
+import { buildApiUrl } from './config/api';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -36,6 +37,11 @@ const ToastNotification = () => {
 };
 
 export default function App() {
+  // Warm up Render backend in background when visitor lands on site
+  useEffect(() => {
+    fetch(buildApiUrl('/api/ping')).catch(() => {});
+  }, []);
+
   return (
     <BrowserRouter>
       <AuthProvider>

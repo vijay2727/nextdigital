@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { buildApiUrl } from '../config/api';
 
 const AuthContext = createContext();
 
@@ -73,8 +74,6 @@ export const AuthProvider = ({ children }) => {
     }
   }, [orders]);
 
-  const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-
   // Login handler
   const login = async (identifier, password) => {
     setIsLoading(true);
@@ -82,7 +81,7 @@ export const AuthProvider = ({ children }) => {
 
     try {
       // 1. Try Express backend API
-      const res = await fetch(`${apiBase}/api/auth/login`, {
+      const res = await fetch(buildApiUrl('/api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ identifier, password })
@@ -140,7 +139,7 @@ export const AuthProvider = ({ children }) => {
 
     try {
       // 1. Try Express backend API
-      const res = await fetch(`${apiBase}/api/auth/register`, {
+      const res = await fetch(buildApiUrl('/api/auth/register'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
@@ -204,7 +203,7 @@ export const AuthProvider = ({ children }) => {
     if (!user) return { success: false };
 
     try {
-      fetch(`${apiBase}/api/auth/profile`, {
+      fetch(buildApiUrl('/api/auth/profile'), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user.id, ...updatedFields })

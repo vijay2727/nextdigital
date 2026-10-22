@@ -10,8 +10,41 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// Enable CORS for Vercel, localhost, and custom domains
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
+}));
 app.use(express.json());
+
+// Root endpoint for Render health and browser visitors
+app.get('/', (req, res) => {
+  res.json({
+    service: 'NextDigital India E-Commerce Backend API',
+    status: 'online',
+    version: '1.0.0',
+    documentation: 'https://github.com/vijay2727/nextdigital',
+    endpoints: {
+      health: '/api/health',
+      ping: '/api/ping',
+      products: '/api/products',
+      categories: '/api/categories',
+      clients: '/api/clients',
+      inquiries: '/api/inquiries (POST)',
+      checkout: '/api/checkout (POST)',
+      login: '/api/auth/login (POST)',
+      register: '/api/auth/register (POST)',
+      profile: '/api/auth/profile (PUT)',
+      orders: '/api/customer/orders'
+    }
+  });
+});
+
+// Lightweight wake-up ping endpoint (helps warm up Render free tier instances)
+app.get('/api/ping', (req, res) => {
+  res.json({ pong: true, timestamp: Date.now() });
+});
 
 // Serve images statically if requested through backend
 app.use('/images', express.static(path.join(__dirname, '../atoz_product_images')));

@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { CheckCircle2, ShieldCheck, Truck, CreditCard, Banknote, AlertCircle, ArrowLeft, UserCheck, Lock } from 'lucide-react';
+import { buildApiUrl } from '../config/api';
 
 export const Checkout = () => {
   const { cartItems, subtotal, coupon, couponDiscount, shippingCost, grandTotal, clearCart } = useCart();
@@ -67,8 +68,7 @@ export const Checkout = () => {
     };
 
     try {
-      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const res = await fetch(`${apiBase}/api/checkout`, {
+      const res = await fetch(buildApiUrl('/api/checkout'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
