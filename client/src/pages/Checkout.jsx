@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { CheckCircle2, ShieldCheck, Truck, CreditCard, Banknote, AlertCircle, ArrowLeft, UserCheck, Lock } from 'lucide-react';
+import { CheckCircle2, ShieldCheck, CreditCard, Banknote, ArrowLeft, UserCheck, Lock } from 'lucide-react';
 import { buildApiUrl } from '../config/api';
 
 export const Checkout = () => {
   const { cartItems, subtotal, coupon, couponDiscount, shippingCost, grandTotal, clearCart } = useCart();
-  const { user, addCustomerOrder } = useAuth();
+  const { user, isAuthenticated, addCustomerOrder } = useAuth();
   const navigate = useNavigate();
 
   const [customer, setCustomer] = useState({
@@ -19,6 +19,16 @@ export const Checkout = () => {
     state: 'Delhi',
     pincode: user?.pincode || ''
   });
+
+  const [paymentMethod, setPaymentMethod] = useState('COD');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [completedOrder, setCompletedOrder] = useState(null);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login?redirect=/checkout', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     if (user) {
@@ -34,9 +44,9 @@ export const Checkout = () => {
     }
   }, [user]);
 
-  const [paymentMethod, setPaymentMethod] = useState('COD');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [completedOrder, setCompletedOrder] = useState(null);
+  if (!isAuthenticated) {
+    return null;
+  }
 
   const formatPrice = (price) => '₹' + price.toLocaleString('en-IN');
 
@@ -118,7 +128,7 @@ export const Checkout = () => {
             Order Placed Successfully!
           </h1>
           <p style={{ color: '#64748b', fontSize: '1rem', marginBottom: '1.5rem' }}>
-            Thank you for choosing NextDigital India. Your order number is:
+            Thank you for choosing DigitalNext India. Your order number is:
           </p>
           <div style={{ display: 'inline-block', background: '#eff6ff', border: '1px dashed #3b82f6', padding: '0.6rem 1.4rem', borderRadius: '8px', fontSize: '1.25rem', fontWeight: 800, color: '#1d4ed8', marginBottom: '2rem' }}>
             {completedOrder.orderId}
@@ -201,7 +211,7 @@ export const Checkout = () => {
                 <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', padding: '0.8rem 1.2rem', borderRadius: '10px', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: '#1e40af', fontSize: '0.88rem' }}>
                     <Lock size={16} color="#2563eb" />
-                    <span>Already a NextDigital customer?</span>
+                    <span>Already a DigitalNext customer?</span>
                   </div>
                   <Link to="/login?redirect=/checkout" style={{ color: '#1d4ed8', fontSize: '0.84rem', fontWeight: 700 }}>
                     Sign In for Faster Checkout →

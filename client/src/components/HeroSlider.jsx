@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Tag, ShieldCheck, Truck, Percent, Award } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ShieldCheck, Truck, Percent, Award } from 'lucide-react';
 
 const SLIDES = [
   {
     id: 1,
     tag: "POPULAR IN PROJECTORS",
-    title: "NextDigital HY260 PRO Smart Projector",
+    title: "DigitalNext HY260 PRO Smart Projector",
     subtitle: "Native 1080P Full HD with 4K decoding support and Android 11.",
     price: "₹9,999",
     mrp: "₹12,000",
@@ -20,14 +20,14 @@ const SLIDES = [
   {
     id: 2,
     tag: "SMART EDUCATION",
-    title: "NextDigital 75 Inch 4K Interactive Flat Panel",
+    title: "DigitalNext 75 Inch 4K Interactive Flat Panel",
     subtitle: "20-point touch smart board for schools, colleges, and meeting rooms.",
     price: "₹1,59,999",
     mrp: "₹2,29,999",
     discount: "30% OFF",
     badgeTitle: "EDUCATION SPECIAL",
     buttonText: "Explore Panels",
-    link: "/product/nextdigital-75-flat-panel",
+    link: "/product/digitalnext-75-flat-panel",
     image: "/images/05ee03a6-21de-4af2-a56d-0f70aaddc51d.png",
     gradient: "linear-gradient(135deg, #1e293b 0%, #4A5Ef1 100%)"
   },
@@ -201,7 +201,7 @@ export const HeroSlider = () => {
             </div>
             <div className="quick-card-info">
               <h4>Save ₹300 on orders</h4>
-              <p>With code <strong>NEXTEXCLUSIVE1</strong></p>
+              <p>With code <strong>DIGITALNEXT1</strong></p>
             </div>
           </div>
 

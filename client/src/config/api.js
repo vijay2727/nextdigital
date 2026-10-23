@@ -1,5 +1,5 @@
 /**
- * NextDigital Production API Client Configuration
+ * DigitalNext Production API Client Configuration
  * Automatically switches between local development server and remote Render backend API
  */
 

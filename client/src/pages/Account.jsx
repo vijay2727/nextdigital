@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useCart } from '../context/CartContext';
 import { 
-  User, Package, MapPin, ShieldCheck, LogOut, CheckCircle2, 
-  Clock, Truck, ChevronRight, Phone, Mail, Edit3, ShoppingBag, ExternalLink
+  User, Package, ShieldCheck, LogOut, CheckCircle2, 
+  ChevronRight, Phone, Mail, Edit3, ShoppingBag
 } from 'lucide-react';
 
 export const Account = () => {
@@ -333,7 +332,7 @@ export const Account = () => {
                   Applicable on all orders above ₹1,999 across smart projectors, flat panels, and CCTV systems.
                 </p>
                 <div style={{ background: '#f8fafc', border: '1px dashed #cbd5e1', padding: '0.6rem 1rem', borderRadius: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <code style={{ fontSize: '1rem', fontWeight: 800, color: '#2563eb' }}>NEXTEXCLUSIVE1</code>
+                  <code style={{ fontSize: '1rem', fontWeight: 800, color: '#2563eb' }}>DIGITALNEXT1</code>
                   <span style={{ fontSize: '0.8rem', color: '#64748b' }}>Apply in cart</span>
                 </div>
               </div>

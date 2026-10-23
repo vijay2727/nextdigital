@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { User, Mail, Phone, Lock, Eye, EyeOff, MapPin, ShieldCheck, ArrowRight, CheckCircle2, AlertCircle } from 'lucide-react';
+import { useCart } from '../context/CartContext';
+import { User, Mail, Phone, Lock, Eye, EyeOff, MapPin, ShieldCheck, ArrowRight, CheckCircle2, AlertCircle, Zap } from 'lucide-react';
 
 export const Register = () => {
   const { register, isLoading, authError, setAuthError } = useAuth();
+  const { restoreAndExecutePendingAction } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
 
   const searchParams = new URLSearchParams(location.search);
   const redirectTo = searchParams.get('redirect') || '/account';
+  const actionParam = searchParams.get('action');
+  const productNameParam = searchParams.get('productName');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -93,6 +97,17 @@ export const Register = () => {
     });
 
     if (res.success) {
+      const executed = restoreAndExecutePendingAction();
+      if (executed) {
+        if (executed.action === 'buy_now') {
+          navigate('/checkout');
+          return;
+        }
+        if (executed.action === 'add_to_cart') {
+          navigate(executed.returnUrl || redirectTo || `/product/${executed.product.id}`);
+          return;
+        }
+      }
       navigate(redirectTo);
     }
   };
@@ -105,7 +120,7 @@ export const Register = () => {
         <div className="auth-container-card" style={{ maxWidth: '980px' }}>
           {/* Left Brand Summary Side */}
           <div className="auth-side-brand">
-            <div className="auth-brand-badge">Join NextDigital Customer Network</div>
+            <div className="auth-brand-badge">Join DigitalNext Customer Network</div>
             <h2 className="auth-brand-title">Create Your Verified Customer Account</h2>
             <p className="auth-brand-desc">
               Get immediate access to verified brand warranties, GST invoicing, express courier dispatches, and customized quotation requests for educational & enterprise hardware.
@@ -132,7 +147,7 @@ export const Register = () => {
                 <CheckCircle2 size={20} color="#38bdf8" />
                 <div>
                   <h4>₹300 Welcome Benefit</h4>
-                  <p>Instant coupon code NEXTEXCLUSIVE1 on orders above ₹1,999.</p>
+                  <p>Instant coupon code DIGITALNEXT1 on orders above ₹1,999.</p>
                 </div>
               </div>
 
@@ -147,7 +162,7 @@ export const Register = () => {
 
             <div style={{ marginTop: 'auto', paddingTop: '1.5rem', borderTop: '1px solid rgba(255, 255, 255, 0.12)', fontSize: '0.85rem', color: '#94a3b8' }}>
               Already registered?{' '}
-              <Link to={`/login${redirectTo !== '/account' ? `?redirect=${encodeURIComponent(redirectTo)}` : ''}`} style={{ color: '#38bdf8', fontWeight: 600 }}>
+              <Link to={`/login${location.search}`} style={{ color: '#38bdf8', fontWeight: 600 }}>
                 Sign in to existing account →
               </Link>
             </div>
@@ -160,6 +175,43 @@ export const Register = () => {
               <h1>Customer Sign Up</h1>
               <p>Complete the brief form below to set up your customer profile.</p>
             </div>
+
+            {/* Auth Gate Notification Banners */}
+            {actionParam === 'add_to_cart' && (
+              <div className="auth-gate-banner" id="auth-gate-banner">
+                <Lock size={20} color="#2563eb" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <div>
+                  <strong>Sign Up to Add to Cart</strong>
+                  <span>
+                    Create your account to add {productNameParam ? <strong>{productNameParam}</strong> : 'this item'} to your cart. We will redirect you right back to your product.
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {actionParam === 'buy_now' && (
+              <div className="auth-gate-banner" id="auth-gate-banner">
+                <Zap size={20} color="#2563eb" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <div>
+                  <strong>Sign Up to Complete Purchase</strong>
+                  <span>
+                    Create your account to buy {productNameParam ? <strong>{productNameParam}</strong> : 'this item'}. You will be redirected straight to checkout to finalize your order.
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {!actionParam && redirectTo === '/checkout' && (
+              <div className="auth-gate-banner" id="auth-gate-banner">
+                <ShieldCheck size={20} color="#2563eb" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <div>
+                  <strong>Sign Up Required for Checkout</strong>
+                  <span>
+                    Please create an account to access checkout and place your order securely. Your cart items are preserved.
+                  </span>
+                </div>
+              </div>
+            )}
 
             {(validationError || authError) && (
               <div className="auth-error-banner" role="alert">
@@ -326,7 +378,7 @@ export const Register = () => {
                     onChange={handleChange}
                   />
                   <span style={{ fontSize: '0.84rem' }}>
-                    I agree to the NextDigital <a href="#terms" onClick={(e) => e.preventDefault()} style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}>Terms of Service</a> and <a href="#privacy" onClick={(e) => e.preventDefault()} style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}>Privacy Policy</a>.
+                    I agree to the DigitalNext <a href="#terms" onClick={(e) => e.preventDefault()} style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}>Terms of Service</a> and <a href="#privacy" onClick={(e) => e.preventDefault()} style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}>Privacy Policy</a>.
                   </span>
                 </label>
               </div>
@@ -344,7 +396,7 @@ export const Register = () => {
               <div className="auth-footer-prompt">
                 <span>Already have an account?</span>
                 <Link
-                  to={`/login${redirectTo !== '/account' ? `?redirect=${encodeURIComponent(redirectTo)}` : ''}`}
+                  to={`/login${location.search}`}
                   className="auth-signup-link"
                   id="link-to-login"
                 >

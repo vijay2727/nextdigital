@@ -21,10 +21,10 @@ app.use(express.json());
 // Root endpoint for Render health and browser visitors
 app.get('/', (req, res) => {
   res.json({
-    service: 'NextDigital India E-Commerce Backend API',
+    service: 'DigitalNext India E-Commerce Backend API',
     status: 'online',
     version: '1.0.0',
-    documentation: 'https://github.com/vijay2727/nextdigital',
+    documentation: 'https://github.com/vijay2727/digitalnext',
     endpoints: {
       health: '/api/health',
       ping: '/api/ping',
@@ -147,7 +147,7 @@ app.post('/api/inquiries', (req, res) => {
 
   res.status(201).json({
     success: true,
-    message: 'Thank you for reaching out! Our team at NextDigital will contact you shortly.',
+    message: 'Thank you for reaching out! Our team at DigitalNext will contact you shortly.',
     inquiryId: inquiry.id
   });
 });
@@ -162,7 +162,7 @@ app.post('/api/checkout', (req, res) => {
   }
 
   const order = {
-    orderId: 'ND-' + Math.floor(100000 + Math.random() * 900000),
+    orderId: 'DN-' + Math.floor(100000 + Math.random() * 900000),
     customer,
     items,
     totalAmount,
@@ -187,7 +187,7 @@ const customers = [
   {
     id: 'CUST-1001',
     name: 'Ramesh Sharma',
-    email: 'demo@nextdigital.com',
+    email: 'demo@digitalnext.com',
     phone: '9876543210',
     password: 'password123',
     address: 'B-42, Sector 62',
@@ -230,7 +230,7 @@ app.post('/api/auth/register', (req, res) => {
   const { password: _, ...userWithoutPass } = newCustomer;
   res.status(201).json({
     success: true,
-    message: 'Account created successfully! Welcome to NextDigital.',
+    message: 'Account created successfully! Welcome to DigitalNext.',
     user: userWithoutPass,
     token: 'jwt-mock-token-' + newCustomer.id
   });
@@ -247,6 +247,7 @@ app.post('/api/auth/login', (req, res) => {
   const cleanIdent = identifier.trim().toLowerCase();
   const customer = customers.find(c => 
     c.email.toLowerCase() === cleanIdent || 
+    (cleanIdent === 'demo@nextdigital.com' && c.email.toLowerCase() === 'demo@digitalnext.com') ||
     (c.phone && c.phone.replace(/\D/g, '') === cleanIdent.replace(/\D/g, ''))
   );
 
@@ -312,9 +313,9 @@ app.get('/api/customer/orders', (req, res) => {
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', service: 'NextDigital India Backend API' });
+  res.json({ status: 'ok', service: 'DigitalNext India Backend API' });
 });
 
 app.listen(PORT, () => {
-  console.log(`NextDigital Backend API running on http://localhost:${PORT}`);
+  console.log(`DigitalNext Backend API running on http://localhost:${PORT}`);
 });

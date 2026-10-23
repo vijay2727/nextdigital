@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: nextdigital-backend
+    name: digitalnext-backend
     runtime: node
     plan: free
     rootDir: server

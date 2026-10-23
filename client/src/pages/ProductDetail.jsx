@@ -2,18 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { PRODUCTS } from '../data/products';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { ProductCard } from '../components/ProductCard';
-import { Star, ShoppingBag, ShieldCheck, Truck, Headphones, Check, ArrowLeft, Zap } from 'lucide-react';
+import { Star, ShoppingBag, ShieldCheck, Truck, Headphones, Check, Zap } from 'lucide-react';
 
 export const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart, setIsDrawerOpen } = useCart();
+  const { addToCart, setIsDrawerOpen, savePendingAction } = useCart();
+  const { isAuthenticated } = useAuth();
 
-  const product = PRODUCTS.find(p => p.id === id);
+  const cleanId = id === 'nextdigital-75-flat-panel' 
+    ? 'digitalnext-75-flat-panel' 
+    : (id === 'nextdigital-65-flat-panel' ? 'digitalnext-65-flat-panel' : id);
+
+  const product = PRODUCTS.find(p => p.id === cleanId || p.id === id);
 
   const [activeImage, setActiveImage] = useState('');
   const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    if (id && (id === 'nextdigital-75-flat-panel' || id === 'nextdigital-65-flat-panel')) {
+      navigate(`/product/${cleanId}`, { replace: true });
+    }
+  }, [id, cleanId, navigate]);
 
   useEffect(() => {
     if (product) {
@@ -39,7 +51,35 @@ export const ProductDetail = () => {
     p => p.category === product.category && p.id !== product.id
   ).slice(0, 4);
 
+  const handleAddToCart = () => {
+    if (!isAuthenticated) {
+      const returnUrl = `/product/${product.id}`;
+      savePendingAction({
+        action: 'add_to_cart',
+        product,
+        quantity,
+        returnUrl
+      });
+      navigate(`/login?redirect=${encodeURIComponent(returnUrl)}&action=add_to_cart&productName=${encodeURIComponent(product.name)}`);
+      return;
+    }
+
+    addToCart(product, quantity);
+    setIsDrawerOpen(true);
+  };
+
   const handleBuyNow = () => {
+    if (!isAuthenticated) {
+      savePendingAction({
+        action: 'buy_now',
+        product,
+        quantity,
+        returnUrl: '/checkout'
+      });
+      navigate(`/login?redirect=${encodeURIComponent('/checkout')}&action=buy_now&productName=${encodeURIComponent(product.name)}`);
+      return;
+    }
+
     addToCart(product, quantity);
     navigate('/checkout');
   };
@@ -171,10 +211,7 @@ export const ProductDetail = () => {
               <button
                 className="btn-add-detail"
                 id="detail-add-to-cart-btn"
-                onClick={() => {
-                  addToCart(product, quantity);
-                  setIsDrawerOpen(true);
-                }}
+                onClick={handleAddToCart}
               >
                 <ShoppingBag size={18} />
                 <span>Add to Cart</span>

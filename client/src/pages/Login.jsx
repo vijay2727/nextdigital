@@ -2,16 +2,19 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { Lock, Mail, Eye, EyeOff, ShieldCheck, ArrowRight, UserCheck, AlertCircle, Sparkles } from 'lucide-react';
+import { Lock, Mail, Eye, EyeOff, ShieldCheck, ArrowRight, UserCheck, AlertCircle, Sparkles, Zap } from 'lucide-react';
 
 export const Login = () => {
   const { login, isLoading, authError, setAuthError } = useAuth();
+  const { restoreAndExecutePendingAction } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Redirect back to page they came from (e.g. checkout), or to /account
+  // Redirect back to page they came from (e.g. checkout, product), or to /account
   const searchParams = new URLSearchParams(location.search);
   const redirectTo = searchParams.get('redirect') || '/account';
+  const actionParam = searchParams.get('action');
+  const productNameParam = searchParams.get('productName');
 
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
@@ -27,6 +30,18 @@ export const Login = () => {
 
     const res = await login(identifier.trim(), password);
     if (res.success) {
+      // Restore and execute any pending cart action (Add to Cart or Buy Now)
+      const executed = restoreAndExecutePendingAction();
+      if (executed) {
+        if (executed.action === 'buy_now') {
+          navigate('/checkout');
+          return;
+        }
+        if (executed.action === 'add_to_cart') {
+          navigate(executed.returnUrl || redirectTo || `/product/${executed.product.id}`);
+          return;
+        }
+      }
       navigate(redirectTo);
     }
   };
@@ -52,8 +67,8 @@ export const Login = () => {
         <div className="auth-container-card">
           {/* Left Branded Presentation Side */}
           <div className="auth-side-brand">
-            <div className="auth-brand-badge">NextDigital Secure Customer Portal</div>
-            <h2 className="auth-brand-title">Welcome to NextDigital India</h2>
+            <div className="auth-brand-badge">DigitalNext Secure Customer Portal</div>
+            <h2 className="auth-brand-title">Welcome to DigitalNext India</h2>
             <p className="auth-brand-desc">
               Sign in to manage your orders, track pan-India courier shipments, access GST invoices, and redeem exclusive customer discounts.
             </p>
@@ -85,7 +100,7 @@ export const Login = () => {
                 </div>
                 <div>
                   <strong>Exclusive VIP Coupons</strong>
-                  <span>Get ₹300 OFF orders above ₹1,999 with code NEXTEXCLUSIVE1.</span>
+                  <span>Get ₹300 OFF orders above ₹1,999 with code DIGITALNEXT1.</span>
                 </div>
               </div>
             </div>
@@ -104,6 +119,43 @@ export const Login = () => {
               <p>Enter your verified email or mobile phone number to continue.</p>
             </div>
 
+            {/* Auth Gate Notification Banners */}
+            {actionParam === 'add_to_cart' && (
+              <div className="auth-gate-banner" id="auth-gate-banner">
+                <Lock size={20} color="#2563eb" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <div>
+                  <strong>Sign In Required to Add to Cart</strong>
+                  <span>
+                    Please sign in to add {productNameParam ? <strong>{productNameParam}</strong> : 'this item'} to your cart. We will redirect you right back to your product.
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {actionParam === 'buy_now' && (
+              <div className="auth-gate-banner" id="auth-gate-banner">
+                <Zap size={20} color="#2563eb" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <div>
+                  <strong>Sign In to Complete Purchase</strong>
+                  <span>
+                    Please sign in to buy {productNameParam ? <strong>{productNameParam}</strong> : 'this item'}. You will be redirected straight to checkout to finalize your order.
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {!actionParam && redirectTo === '/checkout' && (
+              <div className="auth-gate-banner" id="auth-gate-banner">
+                <ShieldCheck size={20} color="#2563eb" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <div>
+                  <strong>Authentication Required for Checkout</strong>
+                  <span>
+                    Please sign in to access checkout and place your order securely. Your cart items are preserved.
+                  </span>
+                </div>
+              </div>
+            )}
+
             {authError && (
               <div className="auth-error-banner" role="alert">
                 <AlertCircle size={18} />
@@ -112,6 +164,23 @@ export const Login = () => {
             )}
 
             <form onSubmit={handleSubmit} id="customer-login-form">
+              {/* Demo quick fill button */}
+              <div className="auth-demo-box">
+                <div className="demo-box-header">Quick Demo Test Credentials</div>
+                <button
+                  type="button"
+                  className="auth-demo-btn"
+                  id="btn-fill-demo-login"
+                  onClick={() => {
+                    setIdentifier('demo@digitalnext.com');
+                    setPassword('password123');
+                  }}
+                >
+                  <UserCheck size={16} />
+                  <span>Click to Fill Demo Credentials (demo@digitalnext.com)</span>
+                </button>
+              </div>
+
               <div className="form-group">
                 <label htmlFor="login-identifier">Email Address or Phone Number</label>
                 <div className="auth-input-wrapper">
@@ -120,7 +189,7 @@ export const Login = () => {
                     type="text"
                     id="login-identifier"
                     name="identifier"
-                    placeholder="e.g. rahul@example.com or 9876543210"
+                    placeholder="e.g. demo@digitalnext.com or 9876543210"
                     required
                     value={identifier}
                     onChange={(e) => {
@@ -191,9 +260,9 @@ export const Login = () => {
               </button>
 
               <div className="auth-footer-prompt">
-                <span>New to NextDigital?</span>
+                <span>New to DigitalNext?</span>
                 <Link
-                  to={`/register${redirectTo !== '/account' ? `?redirect=${encodeURIComponent(redirectTo)}` : ''}`}
+                  to={`/register${location.search}`}
                   className="auth-signup-link"
                   id="link-to-register"
                 >
@@ -213,7 +282,7 @@ export const Login = () => {
               Reset Your Password
             </h3>
             <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '1.5rem', lineHeight: 1.5 }}>
-              Enter the registered email address linked to your NextDigital customer account. We will send a secure password reset link.
+              Enter the registered email address linked to your DigitalNext customer account. We will send a secure password reset link.
             </p>
 
             {forgotSent ? (

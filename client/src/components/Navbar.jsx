@@ -23,7 +23,7 @@ export const Navbar = () => {
       {/* Top Announcement Bar */}
       <div className="top-announcement-bar">
         <span>
-          Use coupon code <strong>NEXTEXCLUSIVE1</strong> to get ₹300 OFF on orders above ₹1,999 | Free Shipping above ₹999
+          Use coupon code <strong>DIGITALNEXT1</strong> to get ₹300 OFF on orders above ₹1,999 | Free Shipping above ₹999
         </span>
       </div>
 
@@ -31,9 +31,9 @@ export const Navbar = () => {
       <div className="container">
         <div className="header-inner">
           {/* Brand Logo */}
-          <Link to="/" className="brand-logo" id="header-brand-logo">
-            <span className="logo-badge">Next</span>
-            <span className="digital">Digital</span>
+          <Link to="/" className="brand-logo" id="header-brand-logo" title="DigitalNext India" aria-label="DigitalNext India">
+            <span className="logo-badge">Digital</span>
+            <span className="next">Next</span>
           </Link>
 
           {/* Search Bar */}

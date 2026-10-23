@@ -37,6 +37,11 @@ const ToastNotification = () => {
 };
 
 export default function App() {
+  // Ensure the document title always displays DigitalNext India immediately in the browser tab
+  useEffect(() => {
+    document.title = 'DigitalNext India | Buy Smart Projectors, CCTV Cameras & Interactive Panels';
+  }, []);
+
   // Warm up Render backend in background when visitor lands on site
   useEffect(() => {
     fetch(buildApiUrl('/api/ping')).catch(() => {});

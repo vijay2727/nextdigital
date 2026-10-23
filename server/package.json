@@ -1,7 +1,7 @@
 {
-  "name": "nextdigital-backend",
+  "name": "digitalnext-backend",
   "version": "1.0.0",
-  "description": "Express.js backend for NextDigital India e-commerce platform",
+  "description": "Express.js backend for DigitalNext India e-commerce platform",
   "main": "server.js",
   "type": "module",
   "scripts": {

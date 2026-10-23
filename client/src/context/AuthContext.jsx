@@ -8,7 +8,7 @@ const INITIAL_DEMO_USERS = [
   {
     id: 'CUST-1001',
     name: 'Ramesh Sharma',
-    email: 'demo@nextdigital.com',
+    email: 'demo@digitalnext.com',
     phone: '9876543210',
     password: 'password123',
     address: 'B-42, Sector 62',
@@ -21,8 +21,15 @@ const INITIAL_DEMO_USERS = [
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     try {
-      const saved = localStorage.getItem('nextdigital_user');
-      return saved ? JSON.parse(saved) : null;
+      const saved = localStorage.getItem('digitalnext_user') || localStorage.getItem('nextdigital_user');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.email && parsed.email.toLowerCase() === 'demo@nextdigital.com') {
+          parsed.email = 'demo@digitalnext.com';
+        }
+        return parsed;
+      }
+      return null;
     } catch {
       return null;
     }
@@ -30,7 +37,7 @@ export const AuthProvider = ({ children }) => {
 
   const [orders, setOrders] = useState(() => {
     try {
-      const saved = localStorage.getItem('nextdigital_user_orders');
+      const saved = localStorage.getItem('digitalnext_user_orders') || localStorage.getItem('nextdigital_user_orders');
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -40,12 +47,18 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [authError, setAuthError] = useState(null);
 
-  // Initialize local demo users in storage if not present
+  // Initialize local demo users in storage and cleanup stale legacy keys
   useEffect(() => {
     try {
-      const stored = localStorage.getItem('nextdigital_all_customers');
+      // Remove any legacy keys
+      localStorage.removeItem('nextdigital_user');
+      localStorage.removeItem('nextdigital_user_orders');
+      localStorage.removeItem('nextdigital_all_customers');
+      localStorage.removeItem('nextdigital_cart');
+
+      const stored = localStorage.getItem('digitalnext_all_customers');
       if (!stored) {
-        localStorage.setItem('nextdigital_all_customers', JSON.stringify(INITIAL_DEMO_USERS));
+        localStorage.setItem('digitalnext_all_customers', JSON.stringify(INITIAL_DEMO_USERS));
       }
     } catch (e) {
       console.error(e);
@@ -56,9 +69,9 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     try {
       if (user) {
-        localStorage.setItem('nextdigital_user', JSON.stringify(user));
+        localStorage.setItem('digitalnext_user', JSON.stringify(user));
       } else {
-        localStorage.removeItem('nextdigital_user');
+        localStorage.removeItem('digitalnext_user');
       }
     } catch (e) {
       console.error(e);
@@ -68,7 +81,7 @@ export const AuthProvider = ({ children }) => {
   // Save user orders to localStorage
   useEffect(() => {
     try {
-      localStorage.setItem('nextdigital_user_orders', JSON.stringify(orders));
+      localStorage.setItem('digitalnext_user_orders', JSON.stringify(orders));
     } catch (e) {
       console.error(e);
     }
@@ -98,12 +111,14 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       // 2. Offline fallback to local registry
       try {
-        const stored = localStorage.getItem('nextdigital_all_customers');
+        const stored = localStorage.getItem('digitalnext_all_customers') || localStorage.getItem('nextdigital_all_customers');
         const allCust = stored ? JSON.parse(stored) : INITIAL_DEMO_USERS;
 
         const cleanIdent = identifier.trim().toLowerCase();
         const found = allCust.find(c =>
           c.email.toLowerCase() === cleanIdent ||
+          (cleanIdent === 'demo@nextdigital.com' && c.email.toLowerCase() === 'demo@digitalnext.com') ||
+          (cleanIdent === 'demo@digitalnext.com' && c.email.toLowerCase() === 'demo@nextdigital.com') ||
           (c.phone && c.phone.replace(/\D/g, '') === cleanIdent.replace(/\D/g, ''))
         );
 
@@ -158,7 +173,7 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       // 2. Offline fallback register in local storage
       try {
-        const stored = localStorage.getItem('nextdigital_all_customers');
+        const stored = localStorage.getItem('digitalnext_all_customers') || localStorage.getItem('nextdigital_all_customers');
         const allCust = stored ? JSON.parse(stored) : INITIAL_DEMO_USERS;
 
         const normEmail = email.trim().toLowerCase();
@@ -182,7 +197,7 @@ export const AuthProvider = ({ children }) => {
         };
 
         allCust.push(newCust);
-        localStorage.setItem('nextdigital_all_customers', JSON.stringify(allCust));
+        localStorage.setItem('digitalnext_all_customers', JSON.stringify(allCust));
 
         const { password: _, ...userObj } = newCust;
         setUser(userObj);
@@ -217,13 +232,13 @@ export const AuthProvider = ({ children }) => {
 
     // Update in local registry
     try {
-      const stored = localStorage.getItem('nextdigital_all_customers');
+      const stored = localStorage.getItem('digitalnext_all_customers') || localStorage.getItem('nextdigital_all_customers');
       if (stored) {
         const allCust = JSON.parse(stored);
         const idx = allCust.findIndex(c => c.id === user.id);
         if (idx !== -1) {
           allCust[idx] = { ...allCust[idx], ...updatedFields };
-          localStorage.setItem('nextdigital_all_customers', JSON.stringify(allCust));
+          localStorage.setItem('digitalnext_all_customers', JSON.stringify(allCust));
         }
       }
     } catch (e) {
@@ -241,11 +256,11 @@ export const AuthProvider = ({ children }) => {
   // Sync helper
   const syncLocalCustomer = (custObj) => {
     try {
-      const stored = localStorage.getItem('nextdigital_all_customers');
+      const stored = localStorage.getItem('digitalnext_all_customers') || localStorage.getItem('nextdigital_all_customers');
       const allCust = stored ? JSON.parse(stored) : INITIAL_DEMO_USERS;
       if (!allCust.some(c => c.id === custObj.id || c.email === custObj.email)) {
         allCust.push(custObj);
-        localStorage.setItem('nextdigital_all_customers', JSON.stringify(allCust));
+        localStorage.setItem('digitalnext_all_customers', JSON.stringify(allCust));
       }
     } catch (e) {
       console.error(e);

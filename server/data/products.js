@@ -1,7 +1,7 @@
 export const PRODUCTS = [
   {
     id: "hy260-pro",
-    name: "NextDigital HY260 PRO Smart Projector",
+    name: "DigitalNext HY260 PRO Smart Projector",
     subtitle: "Full HD 1080P | 4K Supported | Android 11",
     category: "Projectors",
     price: 9999,
@@ -17,7 +17,7 @@ export const PRODUCTS = [
       "/images/HY260 Pro (2).jpeg",
       "/images/HY300 PRO Smart Mini Projector.jpeg"
     ],
-    description: "The NextDigital HY260 PRO delivers vivid 1080P native resolution with 4K decoding support. Powered by Android 11, it allows direct streaming from Netflix, YouTube, and Prime Video without extra streaming sticks. Features ultra-quiet cooling and automatic vertical keystone correction.",
+    description: "The DigitalNext HY260 PRO delivers vivid 1080P native resolution with 4K decoding support. Powered by Android 11, it allows direct streaming from Netflix, YouTube, and Prime Video without extra streaming sticks. Features ultra-quiet cooling and automatic vertical keystone correction.",
     features: [
       "Native 1080P Full HD with 4K video decoding",
       "Android 11 Smart OS built-in with Google Play Store",
@@ -36,7 +36,7 @@ export const PRODUCTS = [
   },
   {
     id: "a32-pro",
-    name: "NextDigital A32 Pro Projector",
+    name: "DigitalNext A32 Pro Projector",
     subtitle: "Full HD 1080P | Android 13 | WiFi 6 | Bluetooth 5.0",
     category: "Projectors",
     price: 8999,
@@ -52,7 +52,7 @@ export const PRODUCTS = [
       "/images/A32 Pro.jpeg",
       "/images/A32 Pro (2).jpeg"
     ],
-    description: "Engineered with the latest Android 13 operating system, the NextDigital A32 Pro brings fast app response, high luminous output, and smooth casting via dual WiFi 6. Perfect for home cinema, gaming, and business presentations.",
+    description: "Engineered with the latest Android 13 operating system, the DigitalNext A32 Pro brings fast app response, high luminous output, and smooth casting via dual WiFi 6. Perfect for home cinema, gaming, and business presentations.",
     features: [
       "Fast Android 13 with 2GB RAM / 16GB ROM",
       "High clarity optical lens with anti-dust sealed engine",
@@ -70,7 +70,7 @@ export const PRODUCTS = [
   },
   {
     id: "hy320-big",
-    name: "NextDigital HY320 BIG Smart Projector",
+    name: "DigitalNext HY320 BIG Smart Projector",
     subtitle: "Android 13 | WiFi 6 | Bluetooth 5.0 | 5000 Lumens",
     category: "Projectors",
     price: 6999,
@@ -104,7 +104,7 @@ export const PRODUCTS = [
   },
   {
     id: "hy320-mini",
-    name: "NextDigital HY320 Mini Smart Projector",
+    name: "DigitalNext HY320 Mini Smart Projector",
     subtitle: "Android 13 | HD 720P Native | WiFi & Bluetooth",
     category: "Projectors",
     price: 5500,
@@ -135,7 +135,7 @@ export const PRODUCTS = [
   },
   {
     id: "hy300-pro",
-    name: "NextDigital HY300 PRO Smart Mini Projector",
+    name: "DigitalNext HY300 PRO Smart Mini Projector",
     subtitle: "HD 720P Android Projector | Auto Focus & Keystone",
     category: "Projectors",
     price: 4500,
@@ -389,8 +389,8 @@ export const PRODUCTS = [
     }
   },
   {
-    id: "nextdigital-75-flat-panel",
-    name: "NextDigital 75\" Interactive Flat Panel",
+    id: "digitalnext-75-flat-panel",
+    name: "DigitalNext 75\" Interactive Flat Panel",
     subtitle: "4K UHD Touch Display | Dual OS (Android & Windows OPS Ready)",
     category: "Interactive Panels",
     price: 159999,
@@ -406,7 +406,7 @@ export const PRODUCTS = [
       "/images/05ee03a6-21de-4af2-a56d-0f70aaddc51d.png",
       "/images/0ffb2a46-b5a6-46b9-88c0-a3b670d3ecff.png"
     ],
-    description: "Modernize classrooms and corporate boardrooms with the NextDigital 75\" Interactive Flat Panel. Featuring 20-point multi-touch writing, 4K anti-glare toughened glass, integrated whiteboard annotation tools, and zero-bonding screen technology for responsive handwriting.",
+    description: "Modernize classrooms and corporate boardrooms with the DigitalNext 75\" Interactive Flat Panel. Featuring 20-point multi-touch writing, 4K anti-glare toughened glass, integrated whiteboard annotation tools, and zero-bonding screen technology for responsive handwriting.",
     features: [
       "Ultra HD 4K (3840 x 2160) Resolution with 178° viewing angle",
       "20-Point Infrared Touch with ultra-low latency stylus response",
@@ -424,8 +424,8 @@ export const PRODUCTS = [
     }
   },
   {
-    id: "nextdigital-65-flat-panel",
-    name: "NextDigital 65\" Interactive Flat Panel",
+    id: "digitalnext-65-flat-panel",
+    name: "DigitalNext 65\" Interactive Flat Panel",
     subtitle: "4K UHD Touch Smart Board for Hybrid Classrooms",
     category: "Interactive Panels",
     price: 139999,
@@ -734,7 +734,7 @@ export const PRODUCTS = [
   },
   {
     id: "car-dashcam-triple",
-    name: "NextDigital Dashcam for Car (Triple Camera with Touch Display)",
+    name: "DigitalNext Dashcam for Car (Triple Camera with Touch Display)",
     subtitle: "Front, Cabin & Rear 3-Way Recording with Touch Screen & DVR",
     category: "Dashcam",
     price: 4999,
@@ -768,7 +768,7 @@ export const PRODUCTS = [
   },
   {
     id: "hdmi-cable-30m",
-    name: "NextDigital HDMI Cable 30 Meter",
+    name: "DigitalNext HDMI Cable 30 Meter",
     subtitle: "Gold Plated 4K High Speed Heavy Duty HDMI Cable with Signal Booster",
     category: "Cables",
     price: 4099,
@@ -799,7 +799,7 @@ export const PRODUCTS = [
   },
   {
     id: "hdmi-cable-20m",
-    name: "NextDigital HDMI Cable 20 Meter",
+    name: "DigitalNext HDMI Cable 20 Meter",
     subtitle: "Heavy Duty Gold Plated 4K HDMI Cable for Projectors",
     category: "Cables",
     price: 2599,
@@ -828,7 +828,7 @@ export const PRODUCTS = [
   },
   {
     id: "hdmi-cable-10m",
-    name: "NextDigital HDMI Cable 10 Meter",
+    name: "DigitalNext HDMI Cable 10 Meter",
     subtitle: "Gold Plated 4K Ultra HD High Speed Cable",
     category: "Cables",
     price: 1199,
@@ -856,7 +856,7 @@ export const PRODUCTS = [
   },
   {
     id: "hdmi-cable-5m",
-    name: "NextDigital HDMI Cable 5 Meter",
+    name: "DigitalNext HDMI Cable 5 Meter",
     subtitle: "High Speed 4K Braided HDMI Cable",
     category: "Cables",
     price: 599,

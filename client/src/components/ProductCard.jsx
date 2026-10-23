@@ -1,13 +1,35 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Star, ShoppingBag, Eye } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Star, ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 export const ProductCard = ({ product }) => {
-  const { addToCart } = useCart();
+  const { addToCart, savePendingAction } = useCart();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const formatPrice = (price) => {
     return '₹' + price.toLocaleString('en-IN');
+  };
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!isAuthenticated) {
+      const returnUrl = `/product/${product.id}`;
+      savePendingAction({
+        action: 'add_to_cart',
+        product,
+        quantity: 1,
+        returnUrl
+      });
+      navigate(`/login?redirect=${encodeURIComponent(returnUrl)}&action=add_to_cart&productName=${encodeURIComponent(product.name)}`);
+      return;
+    }
+
+    addToCart(product, 1);
   };
 
   return (
@@ -67,7 +89,7 @@ export const ProductCard = ({ product }) => {
           <button
             className="btn-card-add"
             id={`add-to-cart-${product.id}`}
-            onClick={() => addToCart(product, 1)}
+            onClick={handleAddToCart}
           >
             <ShoppingBag size={16} />
             <span>Add to Cart</span>

@@ -62,7 +62,7 @@ export const Contact = () => {
             Get in Touch
           </span>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', marginTop: '0.5rem', marginBottom: '0.8rem' }}>
-            Contact NextDigital
+            Contact DigitalNext
           </h1>
           <p style={{ color: '#94a3b8', fontSize: '1.05rem', maxWidth: '600px', margin: '0 auto' }}>
             Need product recommendations, institutional bulk pricing, or onsite CCTV installation? Our team is available 7 days a week.
@@ -145,7 +145,7 @@ export const Contact = () => {
               Send an Inquiry or Request a Quote
             </h3>
             <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '1.8rem' }}>
-              Fill out the details below and a NextDigital specialist will call you back within 2 business hours.
+              Fill out the details below and a DigitalNext specialist will call you back within 2 business hours.
             </p>
 
             {submitSuccess ? (

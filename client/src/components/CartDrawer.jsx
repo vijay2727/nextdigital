@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { X, Plus, Minus, Trash2, ArrowRight, ShieldCheck, Tag } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { X, Plus, Minus } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 export const CartDrawer = () => {
   const {
@@ -19,6 +20,7 @@ export const CartDrawer = () => {
     shippingCost,
     grandTotal
   } = useCart();
+  const { isAuthenticated } = useAuth();
 
   const [inputCode, setInputCode] = useState('');
   const navigate = useNavigate();
@@ -34,7 +36,11 @@ export const CartDrawer = () => {
 
   const handleProceedCheckout = () => {
     setIsDrawerOpen(false);
-    navigate('/checkout');
+    if (!isAuthenticated) {
+      navigate('/login?redirect=/checkout');
+    } else {
+      navigate('/checkout');
+    }
   };
 
   return (
@@ -135,7 +141,7 @@ export const CartDrawer = () => {
               <form onSubmit={handleApply} className="coupon-input-group">
                 <input
                   type="text"
-                  placeholder="Coupon code (NEXTEXCLUSIVE1)"
+                  placeholder="Coupon code (DIGITALNEXT1)"
                   value={inputCode}
                   onChange={(e) => setInputCode(e.target.value)}
                 />
