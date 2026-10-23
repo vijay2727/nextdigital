@@ -1,6 +1,6 @@
-# DigitalNext India — Official E-Commerce Platform
+# DigitalNext Online — Official E-Commerce Platform
 
-A modern, high-performance, responsive e-commerce web application built for **DigitalNext India** ([digitalnextindia.com](https://www.digitalnextindia.com/)).
+A modern, high-performance, responsive e-commerce web application built for **DigitalNext Online** ([digitalnextonline.com](https://digitalnextonline.com/)).
 
 ---
 
@@ -67,7 +67,7 @@ Web App runs at: `http://localhost:5173`
 
 6. **Contact Us (`/contact`)**:
    - Registered Delhi office: `C-76, Street No-7, West Vinod Nagar, Mandawali, Delhi-110092`.
-   - Email: `info@cctvwale.com`
+   - Email: `support@digitalnextonline.com` (Store inquiries: `info@cctvwale.com`)
    - Helpline: `+91 99995 93931`.
    - Interactive quote & inquiry form sending requests directly to `/api/inquiries`.
 

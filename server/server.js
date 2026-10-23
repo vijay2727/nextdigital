@@ -28,10 +28,13 @@ app.use(express.json());
 // Root endpoint for Render health and browser visitors
 app.get('/', (req, res) => {
   res.json({
-    service: 'DigitalNext India E-Commerce Backend API',
+    service: 'DigitalNext Online E-Commerce Backend API',
+    domain: 'digitalnextonline.com',
+    website: 'https://digitalnextonline.com',
+    database: 'PostgreSQL on Render',
     status: 'online',
     version: '1.0.0',
-    documentation: 'https://github.com/vijay2727/digitalnext',
+    documentation: 'https://github.com/vijay2727/nextdigital',
     endpoints: {
       health: '/api/health',
       ping: '/api/ping',
@@ -228,7 +231,7 @@ const customers = [
   {
     id: 'CUST-1001',
     name: 'Ramesh Sharma',
-    email: 'demo@digitalnext.com',
+    email: 'demo@digitalnextonline.com',
     phone: '9876543210',
     password: 'password123',
     address: 'B-42, Sector 62',
@@ -319,12 +322,13 @@ app.post('/api/auth/login', async (req, res) => {
 
   // Query PostgreSQL first
   try {
+    const isDemo = cleanIdent === 'demo@digitalnextonline.com' || cleanIdent === 'demo@digitalnext.com' || cleanIdent === 'demo@nextdigital.com';
     const dbRes = await query(
       `SELECT * FROM customers 
        WHERE LOWER(email) = $1 
           OR (phone IS NOT NULL AND REGEXP_REPLACE(phone, '[^0-9]', '', 'g') = $2)
-          OR ($1 = 'demo@nextdigital.com' AND LOWER(email) = 'demo@digitalnext.com')`,
-      [cleanIdent, cleanIdent.replace(/\D/g, '')]
+          OR ($3 = true AND LOWER(email) IN ('demo@digitalnextonline.com', 'demo@digitalnext.com', 'demo@nextdigital.com'))`,
+      [cleanIdent, cleanIdent.replace(/\D/g, ''), isDemo]
     );
     if (dbRes.rows.length > 0) {
       customer = dbRes.rows[0];
@@ -335,9 +339,10 @@ app.post('/api/auth/login', async (req, res) => {
 
   // Fallback to in-memory list
   if (!customer) {
+    const isDemo = cleanIdent === 'demo@digitalnextonline.com' || cleanIdent === 'demo@digitalnext.com' || cleanIdent === 'demo@nextdigital.com';
     customer = customers.find(c => 
       c.email.toLowerCase() === cleanIdent || 
-      (cleanIdent === 'demo@nextdigital.com' && c.email.toLowerCase() === 'demo@digitalnext.com') ||
+      (isDemo && (c.email.toLowerCase() === 'demo@digitalnextonline.com' || c.email.toLowerCase() === 'demo@digitalnext.com' || c.email.toLowerCase() === 'demo@nextdigital.com')) ||
       (c.phone && c.phone.replace(/\D/g, '') === cleanIdent.replace(/\D/g, ''))
     );
   }

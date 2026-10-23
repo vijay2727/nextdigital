@@ -68,7 +68,7 @@ export const Login = () => {
           {/* Left Branded Presentation Side */}
           <div className="auth-side-brand">
             <div className="auth-brand-badge">DigitalNext Secure Customer Portal</div>
-            <h2 className="auth-brand-title">Welcome to DigitalNext India</h2>
+            <h2 className="auth-brand-title">Welcome to DigitalNext Online</h2>
             <p className="auth-brand-desc">
               Sign in to manage your orders, track pan-India courier shipments, access GST invoices, and redeem exclusive customer discounts.
             </p>
@@ -172,12 +172,12 @@ export const Login = () => {
                   className="auth-demo-btn"
                   id="btn-fill-demo-login"
                   onClick={() => {
-                    setIdentifier('demo@digitalnext.com');
+                    setIdentifier('demo@digitalnextonline.com');
                     setPassword('password123');
                   }}
                 >
                   <UserCheck size={16} />
-                  <span>Click to Fill Demo Credentials (demo@digitalnext.com)</span>
+                  <span>Click to Fill Demo Credentials (demo@digitalnextonline.com)</span>
                 </button>
               </div>
 
@@ -189,7 +189,7 @@ export const Login = () => {
                     type="text"
                     id="login-identifier"
                     name="identifier"
-                    placeholder="e.g. demo@digitalnext.com or 9876543210"
+                    placeholder="e.g. demo@digitalnextonline.com or 9876543210"
                     required
                     value={identifier}
                     onChange={(e) => {

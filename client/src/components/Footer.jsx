@@ -23,7 +23,7 @@ export const Footer = () => {
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.86rem', color: '#cbd5e1' }}>
                 <Mail size={16} color="#60a5fa" />
-                <a href="mailto:info@cctvwale.com" style={{ color: '#cbd5e1' }}>info@cctvwale.com</a>
+                <a href="mailto:support@digitalnextonline.com" style={{ color: '#cbd5e1' }}>support@digitalnextonline.com</a>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.86rem', color: '#cbd5e1' }}>
                 <Phone size={16} color="#60a5fa" />

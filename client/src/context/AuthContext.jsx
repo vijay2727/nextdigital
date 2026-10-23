@@ -8,7 +8,7 @@ const INITIAL_DEMO_USERS = [
   {
     id: 'CUST-1001',
     name: 'Ramesh Sharma',
-    email: 'demo@digitalnext.com',
+    email: 'demo@digitalnextonline.com',
     phone: '9876543210',
     password: 'password123',
     address: 'B-42, Sector 62',
@@ -24,8 +24,8 @@ export const AuthProvider = ({ children }) => {
       const saved = localStorage.getItem('digitalnext_user') || localStorage.getItem('nextdigital_user');
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed && parsed.email && parsed.email.toLowerCase() === 'demo@nextdigital.com') {
-          parsed.email = 'demo@digitalnext.com';
+        if (parsed && parsed.email && (parsed.email.toLowerCase() === 'demo@nextdigital.com' || parsed.email.toLowerCase() === 'demo@digitalnext.com')) {
+          parsed.email = 'demo@digitalnextonline.com';
         }
         return parsed;
       }
@@ -115,10 +115,10 @@ export const AuthProvider = ({ children }) => {
         const allCust = stored ? JSON.parse(stored) : INITIAL_DEMO_USERS;
 
         const cleanIdent = identifier.trim().toLowerCase();
+        const isDemo = cleanIdent === 'demo@digitalnextonline.com' || cleanIdent === 'demo@digitalnext.com' || cleanIdent === 'demo@nextdigital.com';
         const found = allCust.find(c =>
           c.email.toLowerCase() === cleanIdent ||
-          (cleanIdent === 'demo@nextdigital.com' && c.email.toLowerCase() === 'demo@digitalnext.com') ||
-          (cleanIdent === 'demo@digitalnext.com' && c.email.toLowerCase() === 'demo@nextdigital.com') ||
+          (isDemo && (c.email.toLowerCase() === 'demo@digitalnextonline.com' || c.email.toLowerCase() === 'demo@digitalnext.com' || c.email.toLowerCase() === 'demo@nextdigital.com')) ||
           (c.phone && c.phone.replace(/\D/g, '') === cleanIdent.replace(/\D/g, ''))
         );
 

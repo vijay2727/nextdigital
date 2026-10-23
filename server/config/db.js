@@ -92,7 +92,7 @@ export const initTables = async (activePool) => {
   // Seed default demo customer if not exists
   const seedDemoUserSql = `
     INSERT INTO customers (id, name, email, phone, password, address, city, pincode)
-    VALUES ('CUST-1001', 'Ramesh Sharma', 'demo@digitalnext.com', '9876543210', 'password123', 'B-42, Sector 62', 'Noida', '201301')
+    VALUES ('CUST-1001', 'Ramesh Sharma', 'demo@digitalnextonline.com', '9876543210', 'password123', 'B-42, Sector 62', 'Noida', '201301')
     ON CONFLICT (email) DO NOTHING;
   `;
   await p.query(seedDemoUserSql);

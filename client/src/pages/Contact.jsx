@@ -112,7 +112,8 @@ export const Contact = () => {
               <div>
                 <h4>Email Inquiries</h4>
                 <p>
-                  <a href="mailto:info@cctvwale.com" style={{ color: '#ffffff' }}>info@cctvwale.com</a>
+                  <a href="mailto:support@digitalnextonline.com" style={{ color: '#ffffff' }}>support@digitalnextonline.com</a>
+                  <span style={{ display: 'block', fontSize: '0.8rem', color: '#94a3b8', marginTop: '0.2rem' }}>Store support: info@cctvwale.com</span>
                 </p>
               </div>
             </div>
