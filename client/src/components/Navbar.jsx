@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, Search, Phone, ShieldCheck, Menu, X, User } from 'lucide-react';
+import { ShoppingBag, Search, Phone, ShieldCheck, User } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
@@ -8,7 +8,6 @@ export const Navbar = () => {
   const { totalItemsCount, setIsDrawerOpen } = useCart();
   const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleSearchSubmit = (e) => {
@@ -31,7 +30,7 @@ export const Navbar = () => {
       <div className="container">
         <div className="header-inner">
           {/* Brand Logo */}
-          <Link to="/" className="brand-logo" id="header-brand-logo" title="DigitalNext India" aria-label="DigitalNext India">
+          <Link to="/" className="brand-logo" id="header-brand-logo" title="DigitalNext Online" aria-label="DigitalNext Online">
             <span className="logo-badge">Digital</span>
             <span className="next">Next</span>
           </Link>

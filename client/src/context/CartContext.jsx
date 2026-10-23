@@ -132,8 +132,21 @@ export const CartProvider = ({ children }) => {
     setCouponDiscount(0);
   };
 
-  const subtotal = cartItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
-  const totalItemsCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const subtotal = cartItems.reduce((acc, item) => {
+    const price = item?.product?.price || 0;
+    const qty = item?.quantity || 0;
+    return acc + (price * qty);
+  }, 0);
+  const totalItemsCount = cartItems.reduce((acc, item) => acc + (item?.quantity || 0), 0);
+
+  // Auto-remove coupon discount if subtotal drops below the minimum requirement
+  useEffect(() => {
+    if (coupon && subtotal < 1999) {
+      setCoupon('');
+      setCouponDiscount(0);
+      setCouponError('Coupon removed: Order subtotal is now below ₹1,999');
+    }
+  }, [subtotal, coupon]);
 
   const applyCouponCode = (code) => {
     const cleanCode = code.trim().toUpperCase();

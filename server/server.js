@@ -454,7 +454,7 @@ app.get('/api/customer/orders', async (req, res) => {
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', service: 'DigitalNext India Backend API' });
+  res.json({ status: 'ok', service: 'DigitalNext Online Backend API' });
 });
 
 // Server startup sequence: establish database connection before listening for requests

@@ -10,7 +10,7 @@ export const About = () => {
       <section className="about-hero">
         <div className="container">
           <div style={{ textTransform: 'uppercase', color: '#60a5fa', fontSize: '0.82rem', fontWeight: 700, letterSpacing: '1px', marginBottom: '0.5rem' }}>
-            About DigitalNext India
+            About DigitalNext Online
           </div>
           <h1>India's Premier Visual and Surveillance Partner</h1>
           <p>

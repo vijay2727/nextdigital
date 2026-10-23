@@ -91,7 +91,7 @@ export const Checkout = () => {
       } else {
         // Fallback local order
         const mockOrder = {
-          orderId: 'ND-' + Math.floor(100000 + Math.random() * 900000),
+          orderId: 'DN-' + Math.floor(100000 + Math.random() * 900000),
           customer,
           items: payload.items,
           totalAmount: grandTotal,
@@ -104,7 +104,7 @@ export const Checkout = () => {
       }
     } catch {
       const mockOrder = {
-        orderId: 'ND-' + Math.floor(100000 + Math.random() * 900000),
+        orderId: 'DN-' + Math.floor(100000 + Math.random() * 900000),
         customer,
         items: payload.items,
         totalAmount: grandTotal,
@@ -128,7 +128,7 @@ export const Checkout = () => {
             Order Placed Successfully!
           </h1>
           <p style={{ color: '#64748b', fontSize: '1rem', marginBottom: '1.5rem' }}>
-            Thank you for choosing DigitalNext India. Your order number is:
+            Thank you for choosing DigitalNext Online. Your order number is:
           </p>
           <div style={{ display: 'inline-block', background: '#eff6ff', border: '1px dashed #3b82f6', padding: '0.6rem 1.4rem', borderRadius: '8px', fontSize: '1.25rem', fontWeight: 800, color: '#1d4ed8', marginBottom: '2rem' }}>
             {completedOrder.orderId}
@@ -241,7 +241,7 @@ export const Checkout = () => {
                       type="tel"
                       id="checkout-phone"
                       name="phone"
-                      placeholder="+91 99995 93931"
+                      placeholder="e.g. 98765 43210"
                       required
                       value={customer.phone}
                       onChange={handleChange}
@@ -255,7 +255,7 @@ export const Checkout = () => {
                     type="email"
                     id="checkout-email"
                     name="email"
-                    placeholder="deepak@gmail.com"
+                    placeholder="e.g. name@example.com"
                     value={customer.email}
                     onChange={handleChange}
                   />

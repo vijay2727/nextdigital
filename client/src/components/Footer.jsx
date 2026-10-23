@@ -90,7 +90,7 @@ export const Footer = () => {
 
         {/* Footer Bottom */}
         <div className="footer-bottom">
-          <p>© 2026 DigitalNext India. Designed for high performance e-commerce. All rights reserved.</p>
+          <p>© 2026 DigitalNext Online. Designed for high performance e-commerce. All rights reserved.</p>
           <div style={{ display: 'flex', gap: '1.5rem' }}>
             <span>Verified Genuine Products</span>
             <span>GST Registered</span>
