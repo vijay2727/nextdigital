@@ -11,9 +11,7 @@ export const getPool = () => {
     const connectionUri = process.env.DATABASE_URL || process.env.POSTGRES_URL || process.env.PG_URI;
 
     if (!connectionUri) {
-      throw new Error(
-        'PostgreSQL connection URI is missing. Please define DATABASE_URL in your server/.env file or Render environment variables.'
-      );
+      return null;
     }
 
     // Render PostgreSQL requires SSL in production and when connecting to render.com domains
@@ -43,6 +41,9 @@ export const getPool = () => {
  */
 export const initTables = async (activePool) => {
   const p = activePool || getPool();
+  if (!p) {
+    return;
+  }
 
   const createTablesSql = `
     -- Customers Table
@@ -107,14 +108,19 @@ export const connectDB = async () => {
   const connectionUri = process.env.DATABASE_URL || process.env.POSTGRES_URL || process.env.PG_URI;
 
   if (!connectionUri) {
-    const errorMsg =
-      'PostgreSQL connection URI is missing. Please set DATABASE_URL in your .env file or Render environment variables.';
-    console.error(`[DATABASE ERROR] ${errorMsg}`);
-    throw new Error(errorMsg);
+    console.warn(
+      '[DATABASE NOTICE] PostgreSQL connection URI is missing (DATABASE_URL not set).'
+    );
+    console.warn(
+      '[DATABASE NOTICE] Running in in-memory fallback mode. Add DATABASE_URL to Render environment variables to enable persistence.'
+    );
+    return null;
   }
 
   try {
     const activePool = getPool();
+    if (!activePool) return null;
+
     const client = await activePool.connect();
 
     // Verify connectivity with test query
@@ -142,6 +148,9 @@ export const connectDB = async () => {
  */
 export const query = (text, params) => {
   const activePool = getPool();
+  if (!activePool) {
+    return Promise.reject(new Error('PostgreSQL not configured (running in in-memory fallback mode)'));
+  }
   return activePool.query(text, params);
 };
 

@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
     service: 'DigitalNext Online E-Commerce Backend API',
     domain: 'digitalnextonline.com',
     website: 'https://digitalnextonline.com',
-    database: 'PostgreSQL on Render',
+    database: (process.env.DATABASE_URL || process.env.POSTGRES_URL) ? 'PostgreSQL' : 'In-Memory (PostgreSQL not connected)',
     status: 'online',
     version: '1.0.0',
     documentation: 'https://github.com/vijay2727/nextdigital',
@@ -457,17 +457,23 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', service: 'DigitalNext Online Backend API' });
 });
 
-// Server startup sequence: establish database connection before listening for requests
+// Server startup sequence: attempt database connection, fall back gracefully to in-memory mode if DB is not configured
 const startServer = async () => {
   try {
-    await connectDB();
-    app.listen(PORT, () => {
-      console.log(`DigitalNext Backend API running on http://localhost:${PORT}`);
-    });
+    const activeDb = await connectDB();
+    if (activeDb) {
+      console.log('[DATABASE] PostgreSQL initialized and ready.');
+    } else {
+      console.log('[DATABASE] Notice: Server running with in-memory storage (PostgreSQL DATABASE_URL not set).');
+    }
   } catch (error) {
-    console.error('[SERVER FATAL] Database connection failed. Server startup aborted:', error.message);
-    process.exit(1);
+    console.warn('[DATABASE WARN] PostgreSQL connection failed:', error.message);
+    console.warn('[DATABASE WARN] Server continuing startup with in-memory storage fallback.');
   }
+
+  app.listen(PORT, () => {
+    console.log(`DigitalNext Backend API running on port ${PORT}`);
+  });
 };
 
 startServer();
