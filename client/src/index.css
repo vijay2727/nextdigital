@@ -2256,43 +2256,6 @@ input, select, textarea {
   margin-bottom: 1.5rem;
 }
 
-.auth-demo-box {
-  background: #f8fafc;
-  border: 1px dashed #cbd5e1;
-  border-radius: var(--radius-md);
-  padding: 0.9rem;
-  margin-bottom: 1.5rem;
-}
-
-.demo-box-header {
-  font-size: 0.74rem;
-  text-transform: uppercase;
-  color: #64748b;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  margin-bottom: 0.4rem;
-}
-
-.auth-demo-btn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  background: #eff6ff;
-  color: #1d4ed8;
-  border: 1px solid #bfdbfe;
-  padding: 0.55rem 0.8rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.82rem;
-  font-weight: 600;
-  transition: var(--transition);
-}
-
-.auth-demo-btn:hover {
-  background: #dbeafe;
-}
-
 .auth-footer-prompt {
   text-align: center;
   font-size: 0.9rem;

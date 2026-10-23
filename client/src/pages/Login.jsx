@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { Lock, Mail, Eye, EyeOff, ShieldCheck, ArrowRight, UserCheck, AlertCircle, Sparkles, Zap } from 'lucide-react';
+import { Lock, Mail, Eye, EyeOff, ShieldCheck, ArrowRight, AlertCircle, Sparkles, Zap } from 'lucide-react';
 
 export const Login = () => {
   const { login, isLoading, authError, setAuthError } = useAuth();
@@ -164,23 +164,6 @@ export const Login = () => {
             )}
 
             <form onSubmit={handleSubmit} id="customer-login-form">
-              {/* Demo quick fill button */}
-              <div className="auth-demo-box">
-                <div className="demo-box-header">Quick Demo Test Credentials</div>
-                <button
-                  type="button"
-                  className="auth-demo-btn"
-                  id="btn-fill-demo-login"
-                  onClick={() => {
-                    setIdentifier('demo@digitalnextonline.com');
-                    setPassword('password123');
-                  }}
-                >
-                  <UserCheck size={16} />
-                  <span>Click to Fill Demo Credentials (demo@digitalnextonline.com)</span>
-                </button>
-              </div>
-
               <div className="form-group">
                 <label htmlFor="login-identifier">Email Address or Phone Number</label>
                 <div className="auth-input-wrapper">
@@ -189,7 +172,7 @@ export const Login = () => {
                     type="text"
                     id="login-identifier"
                     name="identifier"
-                    placeholder="e.g. demo@digitalnextonline.com or 9876543210"
+                    placeholder="e.g. name@example.com or 9876543210"
                     required
                     value={identifier}
                     onChange={(e) => {
