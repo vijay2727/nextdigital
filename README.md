@@ -7,7 +7,7 @@ A modern, high-performance, responsive e-commerce web application built for **Di
 ## Tech Stack
 - **Frontend**: [React 19](https://react.dev/) + [Vite](https://vite.dev/) + [React Router v7](https://reactrouter.com/) + [Lucide Icons](https://lucide.dev/)
 - **Styling**: Tailored Modern Vanilla CSS (Zero Tailwind, no emojis, strict corporate/enterprise aesthetic)
-- **Backend**: [Node.js](https://nodejs.org/) + [Express.js](https://expressjs.com/) (ES Modules)
+- **Backend**: [Node.js](https://nodejs.org/) + [Express.js](https://expressjs.com/) (ES Modules) + [PostgreSQL](https://www.postgresql.org/) on [Render](https://render.com/)
 - **Product Assets**: Authentic high-resolution imagery from `atoz_product_images`
 
 ---
