@@ -1,8 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { PRODUCTS, CATEGORIES } from '../data/products';
 import { ProductCard } from '../components/ProductCard';
-import { SlidersHorizontal, Search, X } from 'lucide-react';
+import { SlidersHorizontal, ChevronRight, ArrowLeft, ArrowRight, X } from 'lucide-react';
+import { buildApiUrl } from '../config/api';
 
 export const Shop = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -13,6 +14,20 @@ export const Shop = () => {
 
   const [sortOption, setSortOption] = useState('featured');
   const [localSearch, setLocalSearch] = useState(searchQuery);
+  const [liveProducts, setLiveProducts] = useState(PRODUCTS);
+  const [priceMax, setPriceMax] = useState(250000);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+
+  useEffect(() => {
+    fetch(buildApiUrl('/api/products'))
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+          setLiveProducts(data.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     setLocalSearch(searchQuery);
@@ -26,6 +41,7 @@ export const Shop = () => {
       nextParams.set('category', catId);
     }
     setSearchParams(nextParams);
+    setMobileFilterOpen(false);
   };
 
   const handleSearchSubmit = (e) => {
@@ -42,11 +58,12 @@ export const Shop = () => {
   const clearFilters = () => {
     setSearchParams({});
     setLocalSearch('');
+    setPriceMax(250000);
   };
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
-    let list = [...PRODUCTS];
+    let list = [...liveProducts];
 
     if (selectedCategory && selectedCategory.toLowerCase() !== 'all') {
       list = list.filter(p => p.category.toLowerCase() === selectedCategory.toLowerCase());
@@ -66,6 +83,10 @@ export const Shop = () => {
       list = list.filter(p => p.isDeal);
     }
 
+    if (priceMax < 250000) {
+      list = list.filter(p => p.price <= priceMax);
+    }
+
     if (sortOption === 'price-low') {
       list.sort((a, b) => a.price - b.price);
     } else if (sortOption === 'price-high') {
@@ -75,178 +96,214 @@ export const Shop = () => {
     }
 
     return list;
-  }, [selectedCategory, searchQuery, isDealOnly, sortOption]);
+  }, [liveProducts, selectedCategory, searchQuery, isDealOnly, priceMax, sortOption]);
+
+  const categoryTitle = isDealOnly 
+    ? 'On Sale Deals' 
+    : (selectedCategory !== 'all' ? selectedCategory : 'All Products');
 
   return (
-    <div className="shop-page">
+    <div className="shopco-shop-page">
       <div className="container">
-        {/* Breadcrumb / Page Title */}
-        <div style={{ padding: '2rem 0 1rem', borderBottom: '1px solid var(--border-light)' }}>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.2rem', fontWeight: 700, color: '#0f172a' }}>
-            {isDealOnly ? 'Flash Deals & Discounts' : selectedCategory !== 'all' ? selectedCategory : 'All Products'}
-          </h1>
-          <p style={{ color: '#64748b', fontSize: '0.95rem', marginTop: '0.25rem' }}>
-            Showing {filteredProducts.length} authentic digital products & electronics
-          </p>
+        {/* Breadcrumbs */}
+        <div className="shopco-breadcrumbs">
+          <Link to="/">Home</Link>
+          <ChevronRight size={14} />
+          <Link to="/shop">Shop</Link>
+          {selectedCategory !== 'all' && (
+            <>
+              <ChevronRight size={14} />
+              <span className="current-crumb">{selectedCategory}</span>
+            </>
+          )}
         </div>
 
-        {/* Main Shop Layout */}
-        <div className="shop-layout">
-          {/* Sidebar */}
-          <aside className="filter-sidebar">
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.2rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700, fontSize: '1rem', color: '#0f172a' }}>
-                <SlidersHorizontal size={18} />
-                <span>Filters</span>
+        {/* Main Catalog Layout: Sidebar + Grid */}
+        <div className="shop-layout-grid">
+          {/* Left Filter Sidebar */}
+          <aside className={`shop-filter-sidebar ${mobileFilterOpen ? 'mobile-open' : ''}`}>
+            <div className="filter-card">
+              <div className="filter-card-header">
+                <h3>Filters</h3>
+                <SlidersHorizontal size={18} className="filter-icon" />
+                {mobileFilterOpen && (
+                  <button className="close-mobile-filters" onClick={() => setMobileFilterOpen(false)}>
+                    <X size={20} />
+                  </button>
+                )}
               </div>
-              {(selectedCategory !== 'all' || searchQuery || isDealOnly) && (
-                <button onClick={clearFilters} style={{ fontSize: '0.8rem', color: '#dc2626', fontWeight: 600 }}>
-                  Reset
-                </button>
-              )}
-            </div>
 
-            {/* In-sidebar Search */}
-            <div className="filter-group">
-              <h4>Search Products</h4>
-              <form onSubmit={handleSearchSubmit}>
-                <div style={{ display: 'flex', alignItems: 'center', background: '#f8fafc', border: '1px solid var(--border-light)', borderRadius: '6px', padding: '0.4rem 0.6rem' }}>
+              <div className="filter-divider" />
+
+              {/* Category Links */}
+              <div className="filter-group">
+                <ul className="filter-category-list">
+                  <li
+                    className={selectedCategory === 'all' && !isDealOnly ? 'active' : ''}
+                    onClick={() => handleCategoryChange('all')}
+                  >
+                    <span>All Products</span>
+                    <ChevronRight size={14} />
+                  </li>
+                  {CATEGORIES.filter(c => c.id !== 'all').map(cat => (
+                    <li
+                      key={cat.id}
+                      className={selectedCategory.toLowerCase() === cat.id.toLowerCase() ? 'active' : ''}
+                      onClick={() => handleCategoryChange(cat.id)}
+                    >
+                      <span>{cat.name}</span>
+                      <ChevronRight size={14} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="filter-divider" />
+
+              {/* Price Filter */}
+              <div className="filter-group">
+                <h4 className="filter-title">Price</h4>
+                <div className="price-slider-wrap">
                   <input
-                    type="text"
-                    placeholder="Keywords..."
-                    value={localSearch}
-                    onChange={(e) => setLocalSearch(e.target.value)}
-                    style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '0.88rem' }}
+                    type="range"
+                    min="500"
+                    max="250000"
+                    step="500"
+                    value={priceMax}
+                    onChange={(e) => setPriceMax(Number(e.target.value))}
+                    className="shopco-range-slider"
                   />
-                  <button type="submit">
-                    <Search size={16} color="#64748b" />
+                  <div className="price-range-labels">
+                    <span>₹500</span>
+                    <span className="current-range-val">Up to ₹{priceMax.toLocaleString('en-IN')}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="filter-divider" />
+
+              {/* Quick Tags / Dress Style */}
+              <div className="filter-group">
+                <h4 className="filter-title">Type</h4>
+                <div className="filter-tags-grid">
+                  <button
+                    className={`filter-pill-chip ${isDealOnly ? 'active' : ''}`}
+                    onClick={() => {
+                      const next = new URLSearchParams(searchParams);
+                      if (isDealOnly) next.delete('deal');
+                      else next.set('deal', 'true');
+                      setSearchParams(next);
+                    }}
+                  >
+                    Flash Deals
+                  </button>
+                  <button
+                    className="filter-pill-chip"
+                    onClick={() => setSortOption('rating')}
+                  >
+                    Top Rated
+                  </button>
+                  <button
+                    className="filter-pill-chip"
+                    onClick={() => setSortOption('price-low')}
+                  >
+                    Budget Friendly
                   </button>
                 </div>
-              </form>
-            </div>
+              </div>
 
-            {/* Categories */}
-            <div className="filter-group">
-              <h4>Categories</h4>
-              <ul className="category-filter-list">
-                {CATEGORIES.map(cat => {
-                  const count = cat.id === 'all'
-                    ? PRODUCTS.length
-                    : PRODUCTS.filter(p => p.category.toLowerCase() === cat.id.toLowerCase()).length;
+              <div className="filter-divider" />
 
-                  const isActive = (cat.id === 'all' && selectedCategory === 'all') ||
-                    (selectedCategory.toLowerCase() === cat.id.toLowerCase());
-
-                  return (
-                    <li key={cat.id}>
-                      <button
-                        className={`category-filter-btn ${isActive ? 'active' : ''}`}
-                        onClick={() => handleCategoryChange(cat.id)}
-                      >
-                        <span>{cat.name}</span>
-                        <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>({count})</span>
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-
-            {/* Deals Filter Toggle */}
-            <div className="filter-group">
-              <h4>Offers</h4>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.88rem', color: '#334155', cursor: 'pointer' }}>
-                <input
-                  type="checkbox"
-                  checked={isDealOnly}
-                  onChange={(e) => {
-                    const nextParams = new URLSearchParams(searchParams);
-                    if (e.target.checked) {
-                      nextParams.set('deal', 'true');
-                    } else {
-                      nextParams.delete('deal');
-                    }
-                    setSearchParams(nextParams);
-                  }}
-                />
-                <span>Flash Deals Only</span>
-              </label>
+              {/* Apply Filter Button */}
+              <div className="filter-btn-wrap">
+                <button
+                  className="btn-apply-filters"
+                  onClick={() => setMobileFilterOpen(false)}
+                >
+                  Apply Filter
+                </button>
+                {(selectedCategory !== 'all' || searchQuery || isDealOnly || priceMax < 250000) && (
+                  <button className="btn-clear-filters" onClick={clearFilters}>
+                    Clear All
+                  </button>
+                )}
+              </div>
             </div>
           </aside>
 
-          {/* Catalog Content */}
-          <main className="catalog-main">
-            {/* Toolbar */}
-            <div className="catalog-toolbar">
-              <div style={{ fontSize: '0.9rem', color: '#64748b' }}>
-                Found <strong>{filteredProducts.length}</strong> items
+          {/* Right Product Grid Area */}
+          <main className="shop-main-content">
+            <div className="catalog-header-bar">
+              <div className="catalog-title-wrap">
+                <h1 className="catalog-category-title">{categoryTitle}</h1>
+                <span className="catalog-count-text">
+                  Showing 1-{filteredProducts.length} of {filteredProducts.length} Products
+                </span>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                <label htmlFor="sort-select" style={{ fontSize: '0.88rem', color: '#475569', fontWeight: 600 }}>Sort by:</label>
-                <select
-                  id="sort-select"
-                  className="sort-select"
-                  value={sortOption}
-                  onChange={(e) => setSortOption(e.target.value)}
+              <div className="catalog-sort-wrap">
+                {/* Mobile trigger for filters */}
+                <button
+                  className="mobile-filter-trigger"
+                  onClick={() => setMobileFilterOpen(true)}
+                  aria-label="Open filter sidebar"
                 >
-                  <option value="featured">Featured First</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="rating">Highest Rated</option>
-                </select>
+                  <SlidersHorizontal size={16} />
+                </button>
+
+                <div className="sort-by-box">
+                  <span className="sort-label">Sort by:</span>
+                  <select
+                    className="sort-select"
+                    value={sortOption}
+                    onChange={(e) => setSortOption(e.target.value)}
+                  >
+                    <option value="featured">Most Popular</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="rating">Highest Rated</option>
+                  </select>
+                </div>
               </div>
             </div>
 
-            {/* Active filters pill list */}
-            {(selectedCategory !== 'all' || searchQuery || isDealOnly) && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.2rem', flexWrap: 'wrap' }}>
-                <span style={{ fontSize: '0.82rem', color: '#64748b' }}>Active filters:</span>
-                {selectedCategory !== 'all' && (
-                  <span style={{ background: '#eff6ff', color: '#1e40af', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                    Category: {selectedCategory}
-                    <X size={12} style={{ cursor: 'pointer' }} onClick={() => handleCategoryChange('all')} />
-                  </span>
-                )}
-                {searchQuery && (
-                  <span style={{ background: '#eff6ff', color: '#1e40af', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                    Search: "{searchQuery}"
-                    <X size={12} style={{ cursor: 'pointer' }} onClick={() => {
-                      const next = new URLSearchParams(searchParams);
-                      next.delete('search');
-                      setSearchParams(next);
-                    }} />
-                  </span>
-                )}
-                {isDealOnly && (
-                  <span style={{ background: '#fef2f2', color: '#dc2626', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                    Deals Only
-                    <X size={12} style={{ cursor: 'pointer' }} onClick={() => {
-                      const next = new URLSearchParams(searchParams);
-                      next.delete('deal');
-                      setSearchParams(next);
-                    }} />
-                  </span>
-                )}
-              </div>
-            )}
-
             {/* Products Grid */}
             {filteredProducts.length === 0 ? (
-              <div style={{ background: '#ffffff', border: '1px solid var(--border-light)', borderRadius: '10px', padding: '4rem 2rem', textAlign: 'center' }}>
-                <h3 style={{ fontSize: '1.2rem', color: '#0f172a', marginBottom: '0.5rem' }}>No products match your criteria</h3>
-                <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
-                  Try resetting your category or search filters to see all available tech solutions.
-                </p>
-                <button className="btn-primary" onClick={clearFilters}>
-                  Clear All Filters
+              <div className="no-products-box">
+                <h3>No products found</h3>
+                <p>Try resetting your search query or adjusting your filters.</p>
+                <button className="btn-shop-now" onClick={clearFilters} style={{ margin: '1.5rem auto 0' }}>
+                  Reset Filters
                 </button>
               </div>
             ) : (
-              <div className="products-grid">
+              <div className="shopco-products-grid">
                 {filteredProducts.map(product => (
                   <ProductCard key={product.id} product={product} />
                 ))}
+              </div>
+            )}
+
+            {/* Pagination Controls */}
+            {filteredProducts.length > 0 && (
+              <div className="shopco-pagination-bar">
+                <button className="pagination-nav-btn" disabled>
+                  <ArrowLeft size={16} />
+                  <span>Previous</span>
+                </button>
+
+                <div className="pagination-pages-row">
+                  <button className="page-pill active">1</button>
+                  <button className="page-pill">2</button>
+                  <button className="page-pill">3</button>
+                  <span className="page-dots">...</span>
+                  <button className="page-pill">10</button>
+                </div>
+
+                <button className="pagination-nav-btn">
+                  <span>Next</span>
+                  <ArrowRight size={16} />
+                </button>
               </div>
             )}
           </main>

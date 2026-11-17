@@ -83,25 +83,31 @@ export const Checkout = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      const data = await res.json();
+      let finalOrder = null;
       if (res.ok && data.success) {
-        setCompletedOrder(data.order);
-        addCustomerOrder(data.order);
-        clearCart();
+        finalOrder = data.order;
       } else {
-        // Fallback local order
-        const mockOrder = {
+        finalOrder = {
           orderId: 'DN-' + Math.floor(100000 + Math.random() * 900000),
           customer,
           items: payload.items,
           totalAmount: grandTotal,
           paymentMethod,
+          orderStatus: 'Confirmed',
           createdAt: new Date().toISOString()
         };
-        setCompletedOrder(mockOrder);
-        addCustomerOrder(mockOrder);
-        clearCart();
       }
+
+      setCompletedOrder(finalOrder);
+      addCustomerOrder(finalOrder);
+
+      // Save to shared store orders registry so admin sees it instantly
+      try {
+        const existingStoreOrders = JSON.parse(localStorage.getItem('digitalnext_store_orders') || '[]');
+        localStorage.setItem('digitalnext_store_orders', JSON.stringify([finalOrder, ...existingStoreOrders.filter(o => o.orderId !== finalOrder.orderId)]));
+      } catch (err) {}
+
+      clearCart();
     } catch {
       const mockOrder = {
         orderId: 'DN-' + Math.floor(100000 + Math.random() * 900000),
@@ -109,10 +115,18 @@ export const Checkout = () => {
         items: payload.items,
         totalAmount: grandTotal,
         paymentMethod,
+        orderStatus: 'Confirmed',
         createdAt: new Date().toISOString()
       };
       setCompletedOrder(mockOrder);
       addCustomerOrder(mockOrder);
+
+      // Save to shared store orders registry so admin sees it instantly
+      try {
+        const existingStoreOrders = JSON.parse(localStorage.getItem('digitalnext_store_orders') || '[]');
+        localStorage.setItem('digitalnext_store_orders', JSON.stringify([mockOrder, ...existingStoreOrders.filter(o => o.orderId !== mockOrder.orderId)]));
+      } catch (err) {}
+
       clearCart();
     } finally {
       setIsSubmitting(false);

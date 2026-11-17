@@ -14,6 +14,7 @@ import { Checkout } from './pages/Checkout';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Account } from './pages/Account';
+import { Admin } from './pages/Admin';
 import { CheckCircle2 } from 'lucide-react';
 import { buildApiUrl } from './config/api';
 
@@ -30,7 +31,7 @@ const ToastNotification = () => {
   if (!toastMessage) return null;
   return (
     <div className="toast-banner">
-      <CheckCircle2 size={18} color="#38bdf8" />
+      <CheckCircle2 size={18} color="#01AB31" />
       <span>{toastMessage}</span>
     </div>
   );
@@ -65,6 +66,7 @@ export default function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/account" element={<Account />} />
+                <Route path="/admin" element={<Admin />} />
                 <Route path="/cart" element={<Navigate to="/checkout" replace />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>

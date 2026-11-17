@@ -1,4 +1,6 @@
 import pg from 'pg';
+import bcrypt from 'bcryptjs';
+import { PRODUCTS } from '../data/products.js';
 const { Pool } = pg;
 
 let pool = null;
@@ -59,6 +61,37 @@ export const initTables = async (activePool) => {
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );
 
+    -- Admin Users Table
+    CREATE TABLE IF NOT EXISTS admin_users (
+      id VARCHAR(50) PRIMARY KEY,
+      name VARCHAR(100) NOT NULL,
+      email VARCHAR(255) UNIQUE NOT NULL,
+      password_hash VARCHAR(255) NOT NULL,
+      role VARCHAR(50) DEFAULT 'admin',
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+
+    -- Products / Catalog Table
+    CREATE TABLE IF NOT EXISTS products (
+      id VARCHAR(100) PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      subtitle VARCHAR(255),
+      category VARCHAR(100) NOT NULL,
+      price NUMERIC NOT NULL,
+      mrp NUMERIC,
+      discount VARCHAR(50),
+      stock_quantity INT DEFAULT 10,
+      in_stock BOOLEAN DEFAULT true,
+      is_deal BOOLEAN DEFAULT false,
+      is_best_seller BOOLEAN DEFAULT false,
+      image VARCHAR(500) NOT NULL,
+      gallery JSONB DEFAULT '[]',
+      description TEXT,
+      features JSONB DEFAULT '[]',
+      specs JSONB DEFAULT '{}',
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+
     -- Orders Table
     CREATE TABLE IF NOT EXISTS orders (
       id VARCHAR(50) PRIMARY KEY,
@@ -73,6 +106,8 @@ export const initTables = async (activePool) => {
       total NUMERIC NOT NULL,
       payment_method VARCHAR(50) DEFAULT 'COD',
       status VARCHAR(50) DEFAULT 'Confirmed',
+      tracking_number VARCHAR(100),
+      carrier VARCHAR(100),
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );
 
@@ -84,6 +119,7 @@ export const initTables = async (activePool) => {
       phone VARCHAR(50),
       message TEXT NOT NULL,
       category VARCHAR(100),
+      status VARCHAR(50) DEFAULT 'Unread',
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );
   `;
@@ -98,7 +134,60 @@ export const initTables = async (activePool) => {
   `;
   await p.query(seedDemoUserSql);
 
-  console.log('[DATABASE] PostgreSQL schema tables initialized (customers, orders, inquiries).');
+  // Seed default admin user if not exists
+  try {
+    const adminEmail = (process.env.ADMIN_EMAIL || 'admin@digitalnextonline.com').trim().toLowerCase();
+    const adminCheck = await p.query('SELECT id FROM admin_users WHERE LOWER(email) = $1', [adminEmail]);
+    if (adminCheck.rows.length === 0) {
+      const defaultPassword = process.env.ADMIN_PASSWORD || 'Admin@DigitalNext2026';
+      const passwordHash = await bcrypt.hash(defaultPassword, 10);
+      await p.query(
+        'INSERT INTO admin_users (id, name, email, password_hash, role) VALUES ($1, $2, $3, $4, $5)',
+        ['ADMIN-1', 'Store Administrator', adminEmail, passwordHash, 'superadmin']
+      );
+      console.log(`[DATABASE] Default admin seeded (${adminEmail})`);
+    }
+  } catch (adminErr) {
+    console.warn('[DATABASE ADMIN SEED WARN]', adminErr.message);
+  }
+
+  // Seed products table from static catalog if empty
+  try {
+    const prodCountRes = await p.query('SELECT COUNT(*) as count FROM products');
+    const prodCount = parseInt(prodCountRes.rows[0]?.count || '0', 10);
+    if (prodCount === 0 && Array.isArray(PRODUCTS) && PRODUCTS.length > 0) {
+      for (const item of PRODUCTS) {
+        await p.query(
+          `INSERT INTO products (id, name, subtitle, category, price, mrp, discount, stock_quantity, in_stock, is_deal, is_best_seller, image, gallery, description, features, specs)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+           ON CONFLICT (id) DO NOTHING`,
+          [
+            item.id,
+            item.name,
+            item.subtitle || '',
+            item.category || 'General',
+            item.price || 0,
+            item.mrp || item.price || 0,
+            item.discount || '',
+            item.stockQuantity || 15,
+            item.inStock !== false,
+            !!item.isDeal,
+            !!item.isBestSeller,
+            item.image || '',
+            JSON.stringify(item.gallery || []),
+            item.description || '',
+            JSON.stringify(item.features || []),
+            JSON.stringify(item.specs || {})
+          ]
+        );
+      }
+      console.log(`[DATABASE] Initialized ${PRODUCTS.length} catalog products in PostgreSQL.`);
+    }
+  } catch (prodErr) {
+    console.warn('[DATABASE PRODUCTS SEED WARN]', prodErr.message);
+  }
+
+  console.log('[DATABASE] PostgreSQL schema tables initialized (customers, admin_users, products, orders, inquiries).');
 };
 
 /**
@@ -136,17 +225,24 @@ export const connectDB = async () => {
     // Auto-create tables on startup
     await initTables(activePool);
 
+    isConnected = true;
     return activePool;
   } catch (error) {
+    isConnected = false;
     console.error(`[DATABASE ERROR] Failed to connect to PostgreSQL: ${error.message}`);
     throw error;
   }
 };
 
+let isConnected = false;
+
 /**
  * Query helper to execute SQL statements safely
  */
 export const query = (text, params) => {
+  if (!isConnected) {
+    return Promise.reject(new Error('PostgreSQL not connected (running in in-memory mode)'));
+  }
   const activePool = getPool();
   if (!activePool) {
     return Promise.reject(new Error('PostgreSQL not configured (running in in-memory fallback mode)'));
