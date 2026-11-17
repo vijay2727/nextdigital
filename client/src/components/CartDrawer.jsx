@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X, Plus, Minus, Trash2, ArrowRight, Tag } from 'lucide-react';
+import { X, Plus, Minus } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
@@ -51,10 +51,10 @@ export const CartDrawer = () => {
         onClick={() => setIsDrawerOpen(false)}
       />
 
-      {/* Drawer Panel */}
-      <div className={`shopco-cart-drawer ${isDrawerOpen ? 'open' : ''}`} id="cart-drawer-panel">
+      {/* Drawer */}
+      <div className={`cart-drawer ${isDrawerOpen ? 'open' : ''}`} id="cart-drawer-panel">
         <div className="drawer-header">
-          <h3 className="drawer-title">YOUR CART</h3>
+          <h3>Shopping Cart ({cartItems.length})</h3>
           <button
             className="drawer-close-btn"
             id="close-cart-drawer"
@@ -65,25 +65,27 @@ export const CartDrawer = () => {
           </button>
         </div>
 
-        {/* Free Shipping Progress Alert */}
-        <div className="drawer-shipping-notice">
+        {/* Free shipping banner */}
+        <div style={{ background: '#f0fdf4', padding: '0.65rem 1.5rem', borderBottom: '1px solid #dcfce7', fontSize: '0.82rem', color: '#166534' }}>
           {subtotal >= 999 ? (
-            <span>You unlocked <strong>FREE Shipping</strong>!</span>
+            <span>You have unlocked <strong>FREE Shipping</strong>!</span>
           ) : (
-            <span>Add <strong>{formatPrice(999 - subtotal)}</strong> more for FREE Shipping!</span>
+            <span>Add <strong>{formatPrice(999 - subtotal)}</strong> more to get Free Shipping!</span>
           )}
         </div>
 
         {/* Drawer Body */}
         <div className="drawer-body">
           {cartItems.length === 0 ? (
-            <div className="cart-empty-state">
-              <div className="empty-title">Your cart is empty</div>
-              <p className="empty-subtitle">
-                Explore our catalog to add clothes, smart projectors, and tech gadgets to your cart.
+            <div style={{ textAlign: 'center', padding: '3rem 1rem', color: '#64748b' }}>
+              <div style={{ fontSize: '1.1rem', fontWeight: 600, color: '#0f172a', marginBottom: '0.5rem' }}>
+                Your cart is empty
+              </div>
+              <p style={{ fontSize: '0.9rem', marginBottom: '1.5rem' }}>
+                Explore our smart projectors, CCTV cameras, and tech accessories.
               </p>
               <button
-                className="btn-shop-now"
+                className="btn-primary"
                 onClick={() => {
                   setIsDrawerOpen(false);
                   navigate('/shop');
@@ -93,124 +95,95 @@ export const CartDrawer = () => {
               </button>
             </div>
           ) : (
-            <div className="drawer-items-list">
-              {cartItems.map((item) => (
-                <div className="cart-item-card" key={item.product.id}>
-                  {/* Thumbnail */}
-                  <div className="cart-item-thumb-box">
-                    <img
-                      src={item.product.image}
-                      alt={item.product.name}
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = '/images/HY260 Pro (2).jpeg';
-                      }}
-                    />
-                  </div>
+            cartItems.map((item) => (
+              <div className="cart-item-row" key={item.product.id}>
+                <div className="cart-item-thumb">
+                  <img src={item.product.image} alt={item.product.name} />
+                </div>
+                <div className="cart-item-details">
+                  <h4 title={item.product.name}>{item.product.name}</h4>
+                  <div className="cart-item-price">{formatPrice(item.product.price)}</div>
 
-                  {/* Info */}
-                  <div className="cart-item-info">
-                    <div className="item-title-row">
-                      <h4 className="item-name" title={item.product.name}>
-                        {item.product.name}
-                      </h4>
-                      <button
-                        className="item-remove-btn"
-                        onClick={() => removeFromCart(item.product.id)}
-                        aria-label={`Remove ${item.product.name}`}
-                      >
-                        <Trash2 size={16} />
+                  <div className="cart-item-controls">
+                    <div className="quantity-control" style={{ transform: 'scale(0.85)', transformOrigin: 'left' }}>
+                      <button className="qty-btn" onClick={() => updateQuantity(item.product.id, -1)}>
+                        <Minus size={14} />
+                      </button>
+                      <span className="qty-display">{item.quantity}</span>
+                      <button className="qty-btn" onClick={() => updateQuantity(item.product.id, 1)}>
+                        <Plus size={14} />
                       </button>
                     </div>
 
-                    <span className="item-variant-label">
-                      Category: {item.product.category}
-                    </span>
-
-                    <div className="item-price-quantity-row">
-                      <span className="item-price">{formatPrice(item.product.price)}</span>
-
-                      <div className="shopco-qty-pill small">
-                        <button
-                          className="qty-btn"
-                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                          aria-label="Decrease quantity"
-                        >
-                          <Minus size={14} />
-                        </button>
-                        <span className="qty-number">{item.quantity}</span>
-                        <button
-                          className="qty-btn"
-                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          aria-label="Increase quantity"
-                        >
-                          <Plus size={14} />
-                        </button>
-                      </div>
-                    </div>
+                    <button
+                      className="btn-remove-item"
+                      onClick={() => removeFromCart(item.product.id)}
+                    >
+                      Remove
+                    </button>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))
           )}
         </div>
 
-        {/* Drawer Footer / Order Summary */}
+        {/* Drawer Footer */}
         {cartItems.length > 0 && (
-          <div className="drawer-footer-summary">
-            {/* Promo code pill input */}
-            <form className="drawer-coupon-form" onSubmit={handleApply}>
-              <div className="promo-input-box">
-                <Tag size={16} className="promo-tag-icon" />
+          <div className="drawer-footer">
+            {/* Coupon Box */}
+            {coupon ? (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#eff6ff', padding: '0.5rem 0.8rem', borderRadius: '6px', marginBottom: '0.8rem', fontSize: '0.85rem' }}>
+                <span style={{ color: '#1e40af', fontWeight: 600 }}>Coupon: {coupon} (-{formatPrice(couponDiscount)})</span>
+                <button onClick={removeCoupon} style={{ color: '#dc2626', fontSize: '0.8rem', fontWeight: 600 }}>Remove</button>
+              </div>
+            ) : (
+              <form onSubmit={handleApply} className="coupon-input-group">
                 <input
                   type="text"
-                  placeholder="Add promo code"
+                  placeholder="Coupon code (DIGITALNEXT1)"
                   value={inputCode}
                   onChange={(e) => setInputCode(e.target.value)}
                 />
-              </div>
-              <button type="submit" className="btn-apply-coupon">
-                Apply
-              </button>
-            </form>
+                <button type="submit" className="btn-apply-coupon">Apply</button>
+              </form>
+            )}
 
-            {couponError && <div className="coupon-error-msg">{couponError}</div>}
-            {coupon && (
-              <div className="coupon-applied-msg">
-                <span>Code <strong>{coupon}</strong> applied: -{formatPrice(couponDiscount)}</span>
-                <button type="button" onClick={removeCoupon} className="remove-code-btn">Remove</button>
+            {couponError && (
+              <div style={{ color: '#dc2626', fontSize: '0.78rem', marginBottom: '0.6rem' }}>
+                {couponError}
               </div>
             )}
 
-            {/* Calculations */}
-            <div className="summary-lines">
-              <div className="summary-row">
-                <span>Subtotal</span>
-                <span className="bold-val">{formatPrice(subtotal)}</span>
+            <div className="order-summary-row">
+              <span>Subtotal</span>
+              <span>{formatPrice(subtotal)}</span>
+            </div>
+
+            {couponDiscount > 0 && (
+              <div className="order-summary-row" style={{ color: '#16a34a' }}>
+                <span>Discount</span>
+                <span>-{formatPrice(couponDiscount)}</span>
               </div>
-              {couponDiscount > 0 && (
-                <div className="summary-row discount-row">
-                  <span>Discount</span>
-                  <span className="discount-val">-{formatPrice(couponDiscount)}</span>
-                </div>
-              )}
-              <div className="summary-row">
-                <span>Delivery Fee</span>
-                <span className="bold-val">{shippingCost === 0 ? 'FREE' : formatPrice(shippingCost)}</span>
-              </div>
-              <div className="summary-divider" />
-              <div className="summary-row total-row">
-                <span>Total</span>
-                <span className="total-val">{formatPrice(grandTotal)}</span>
-              </div>
+            )}
+
+            <div className="order-summary-row">
+              <span>Shipping</span>
+              <span>{shippingCost === 0 ? 'FREE' : formatPrice(shippingCost)}</span>
+            </div>
+
+            <div className="order-summary-row total">
+              <span>Estimated Total</span>
+              <span>{formatPrice(grandTotal)}</span>
             </div>
 
             <button
-              className="btn-checkout-shopco"
+              className="btn-checkout-proceed"
+              id="drawer-proceed-to-checkout"
               onClick={handleProceedCheckout}
+              style={{ marginTop: '1rem' }}
             >
-              <span>Go to Checkout</span>
-              <ArrowRight size={18} />
+              Proceed to Checkout
             </button>
           </div>
         )}

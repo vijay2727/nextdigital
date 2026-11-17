@@ -1,171 +1,115 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CheckCircle2, Star } from 'lucide-react';
-import { PRODUCTS } from '../data/products';
+import { ArrowRight } from 'lucide-react';
+import { PRODUCTS, CATEGORIES } from '../data/products';
 import { ProductCard } from '../components/ProductCard';
-import { HeroSection } from '../components/HeroSection';
+import { ProudAssociation } from '../components/ProudAssociation';
+import { HeroSlider } from '../components/HeroSlider';
 
 export const Home = () => {
-  // New Arrivals & Top Selling product slices
-  const newArrivals = PRODUCTS.slice(0, 4);
-  const topSelling = PRODUCTS.filter(p => p.isBestSeller || p.isDeal).slice(0, 4);
-
-  const testimonials = [
-    {
-      id: 1,
-      name: "Sarah M.",
-      verified: true,
-      text: "I'm blown away by the quality and style of the products I received. From customer support to delivery, everything was seamless and beyond my expectations!"
-    },
-    {
-      id: 2,
-      name: "Alex K.",
-      verified: true,
-      text: "Finding high-performance tech that looks sleek in my living room used to be a struggle until I discovered this store. The HY260 projector is phenomenal!"
-    },
-    {
-      id: 3,
-      name: "James L.",
-      verified: true,
-      text: "As someone who is really particular about product quality and aesthetics, I can say with 100% certainty that this is the best purchase decision I've made this year."
-    }
-  ];
+  const flashDeals = PRODUCTS.filter(p => p.isDeal).slice(0, 6);
+  const bestSellers = PRODUCTS.filter(p => p.isBestSeller).slice(0, 6);
 
   return (
-    <div className="shopco-home-page">
-      {/* 1. Hero Section + Brand Strip */}
-      <HeroSection />
+    <div className="home-page">
+      {/* 1. Hero Slider Section with 4 Slides and Quick Highlights Strip */}
+      <HeroSlider />
 
-      {/* 2. New Arrivals Section */}
-      <section className="shopco-section" id="new-arrivals">
+      {/* 2. Flash Deals Section */}
+      <section className="section-wrapper" id="home-flash-deals">
         <div className="container">
-          <h2 className="section-main-heading">NEW ARRIVALS</h2>
-
-          <div className="shopco-products-grid">
-            {newArrivals.map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-
-          <div className="section-cta-wrap">
-            <Link to="/shop" className="btn-view-all-pill">
-              View All
+          <div className="section-header">
+            <div className="section-title-group">
+              <h2>Flash Deals</h2>
+              <p>Direct pricing on verified projectors and surveillance equipment</p>
+            </div>
+            <Link to="/shop?deal=true" className="view-all-link">
+              <span>View All Deals</span>
+              <ArrowRight size={16} />
             </Link>
           </div>
 
-          <div className="section-horizontal-divider" />
-        </div>
-      </section>
-
-      {/* 3. Top Selling Section */}
-      <section className="shopco-section" id="top-selling">
-        <div className="container">
-          <h2 className="section-main-heading">TOP SELLING</h2>
-
-          <div className="shopco-products-grid">
-            {topSelling.map(product => (
+          <div className="products-grid">
+            {flashDeals.map(product => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
+        </div>
+      </section>
 
-          <div className="section-cta-wrap">
-            <Link to="/shop?deal=true" className="btn-view-all-pill">
-              View All
+      {/* 3. Category Showcase */}
+      <section className="section-wrapper" style={{ background: 'var(--color-soft-blue)' }}>
+        <div className="container">
+          <div className="section-header">
+            <div className="section-title-group">
+              <h2>Product Categories</h2>
+              <p>Hardware solutions for cinema setups, smart classrooms, and security</p>
+            </div>
+            <Link to="/shop" className="view-all-link">
+              <span>All Products</span>
+              <ArrowRight size={16} />
             </Link>
           </div>
-        </div>
-      </section>
 
-      {/* 4. Browse by Category / Dress Style Bento Container */}
-      <section className="shopco-section bento-section">
-        <div className="container">
-          <div className="bento-container-card">
-            <h2 className="bento-main-heading">BROWSE BY CATEGORY</h2>
-
-            <div className="bento-grid">
-              {/* Card 1: Projectors */}
-              <Link to="/shop?category=Projectors" className="bento-card bento-card-sm bento-card-1">
-                <span className="bento-card-title">Projectors</span>
-                <img
-                  src="/images/HY260 Pro (2).jpeg"
-                  alt="Projectors"
-                  className="bento-card-bg-img"
-                />
+          <div className="categories-showcase-grid">
+            {CATEGORIES.filter(c => c.id !== 'all').map(cat => (
+              <Link to={`/shop?category=${cat.id}`} key={cat.id} className="category-tile">
+                <h4>{cat.name}</h4>
+                <span>Explore Catalog</span>
               </Link>
-
-              {/* Card 2: Interactive Panels */}
-              <Link to="/shop?category=Interactive Panels" className="bento-card bento-card-lg bento-card-2">
-                <span className="bento-card-title">Smart Panels</span>
-                <img
-                  src="/images/05ee03a6-21de-4af2-a56d-0f70aaddc51d.png"
-                  alt="Smart Panels"
-                  className="bento-card-bg-img"
-                />
-              </Link>
-
-              {/* Card 3: CCTV Surveillance */}
-              <Link to="/shop?category=CCTV" className="bento-card bento-card-lg bento-card-3">
-                <span className="bento-card-title">CCTV Cameras</span>
-                <img
-                  src="/images/1_24e0b08d-b976-4af6-b1c3-25577607556f.webp"
-                  alt="CCTV Cameras"
-                  className="bento-card-bg-img"
-                />
-              </Link>
-
-              {/* Card 4: Dashcam & Storage */}
-              <Link to="/shop?category=Dashcam" className="bento-card bento-card-sm bento-card-4">
-                <span className="bento-card-title">Car Dashcams</span>
-                <img
-                  src="/images/Dash Cam.png"
-                  alt="Car Dashcams"
-                  className="bento-card-bg-img"
-                />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Customer Reviews / Testimonials Section */}
-      <section className="shopco-section testimonials-section">
-        <div className="container">
-          <div className="testimonials-header-row">
-            <h2 className="section-main-heading left-align">OUR HAPPY CUSTOMERS</h2>
-            <div className="testimonials-nav-arrows">
-              <button className="arrow-btn" aria-label="Previous review">
-                <ArrowLeft size={20} />
-              </button>
-              <button className="arrow-btn" aria-label="Next review">
-                <ArrowRight size={20} />
-              </button>
-            </div>
-          </div>
-
-          <div className="testimonials-grid">
-            {testimonials.map((t) => (
-              <div key={t.id} className="testimonial-card">
-                <div className="testimonial-stars-row">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} size={18} fill="#FFC633" color="#FFC633" />
-                  ))}
-                </div>
-
-                <div className="testimonial-author">
-                  <span className="author-name">{t.name}</span>
-                  {t.verified && (
-                    <CheckCircle2 size={16} className="verified-icon" fill="#01AB31" color="#ffffff" />
-                  )}
-                </div>
-
-                <p className="testimonial-body">
-                  "{t.text}"
-                </p>
-              </div>
             ))}
           </div>
         </div>
       </section>
+
+      {/* 4. Best Sellers */}
+      <section className="section-wrapper" id="home-bestsellers">
+        <div className="container">
+          <div className="section-header">
+            <div className="section-title-group">
+              <h2>Best Sellers</h2>
+              <p>Verified models for home entertainment, education, and surveillance</p>
+            </div>
+            <Link to="/shop" className="view-all-link">
+              <span>View Full Catalog</span>
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+
+          <div className="products-grid">
+            {bestSellers.map(product => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Promotional Banner */}
+      <div className="container">
+        <div style={{ background: '#030303', color: '#ffffff', borderRadius: '16px', padding: '2.5rem 3rem', display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', alignItems: 'center', gap: '2rem', margin: '2rem 0 3.5rem', boxShadow: 'var(--shadow-lg)' }}>
+          <div>
+            <span style={{ display: 'inline-block', background: 'var(--color-accent)', color: '#030303', padding: '0.25rem 0.75rem', borderRadius: '4px', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.8rem' }}>
+              Special Promotion
+            </span>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', lineHeight: 1.2, marginBottom: '0.8rem', color: '#ffffff' }}>
+              Triple Camera Car Dashcam with Touch Screen
+            </h3>
+            <p style={{ color: '#d1d5db', fontSize: '0.96rem', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+              Front road view, cabin interior recording with night vision, and rear parking camera with guidelines.
+            </p>
+            <Link to="/product/car-dashcam-triple" className="btn-primary">
+              <span>View Dashcam (₹4,999)</span>
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <img src="/images/Dash Cam.png" alt="DigitalNext Car Dashcam" style={{ maxWidth: '100%', maxHeight: '220px', objectFit: 'contain' }} />
+          </div>
+        </div>
+      </div>
+
+      {/* 6. Proud Association */}
+      <ProudAssociation />
     </div>
   );
 };
