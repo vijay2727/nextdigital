@@ -401,10 +401,10 @@ export const PRODUCTS = [
     inStock: true,
     isDeal: true,
     isBestSeller: true,
-    image: "/images/05ee03a6-21de-4af2-a56d-0f70aaddc51d.png",
+    image: "/images/1_24e0b08d-b976-4af6-b1c3-25577607556f.webp",
     gallery: [
-      "/images/05ee03a6-21de-4af2-a56d-0f70aaddc51d.png",
-      "/images/0ffb2a46-b5a6-46b9-88c0-a3b670d3ecff.png"
+      "/images/1_24e0b08d-b976-4af6-b1c3-25577607556f.webp",
+      "/images/87ca7fc3-16c7-41c6-966a-96798c65539c.png"
     ],
     description: "Modernize classrooms and corporate boardrooms with the DigitalNext 75\" Interactive Flat Panel. Featuring 20-point multi-touch writing, 4K anti-glare toughened glass, integrated whiteboard annotation tools, and zero-bonding screen technology for responsive handwriting.",
     features: [
@@ -466,9 +466,10 @@ export const PRODUCTS = [
     inStock: true,
     isDeal: true,
     isBestSeller: true,
-    image: "/images/1_24e0b08d-b976-4af6-b1c3-25577607556f.webp",
+    image: "/images/05ee03a6-21de-4af2-a56d-0f70aaddc51d.png",
     gallery: [
-      "/images/1_24e0b08d-b976-4af6-b1c3-25577607556f.webp"
+      "/images/05ee03a6-21de-4af2-a56d-0f70aaddc51d.png",
+      "/images/0ffb2a46-b5a6-46b9-88c0-a3b670d3ecff.png"
     ],
     description: "Keep complete vigil on your home or office with CP PLUS CP-E28A. Features 360-degree motorized pan and tilt control from the mobile app, smart human detection, two-way audio talk, and night vision up to 10 meters.",
     features: [

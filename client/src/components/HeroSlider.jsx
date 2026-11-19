@@ -28,7 +28,7 @@ const SLIDES = [
     badgeTitle: "EDUCATION SPECIAL",
     buttonText: "Explore Panels",
     link: "/product/digitalnext-75-flat-panel",
-    image: "/images/05ee03a6-21de-4af2-a56d-0f70aaddc51d.png",
+    image: "/images/1_24e0b08d-b976-4af6-b1c3-25577607556f.webp",
     gradient: "linear-gradient(135deg, #1e293b 0%, #4A5Ef1 100%)"
   },
   {
@@ -42,7 +42,7 @@ const SLIDES = [
     badgeTitle: "TOP SELLER & PRICE",
     buttonText: "Shop CCTV Cameras",
     link: "/product/cp-plus-cpe28a",
-    image: "/images/1_24e0b08d-b976-4af6-b1c3-25577607556f.webp",
+    image: "/images/05ee03a6-21de-4af2-a56d-0f70aaddc51d.png",
     gradient: "linear-gradient(135deg, #0f172a 0%, #7989f7 100%)"
   },
   {
@@ -183,7 +183,7 @@ export const HeroSlider = () => {
           {/* Card 1: Featured deal */}
           <Link to="/product/cp-plus-cpe28a" className="quick-strip-card">
             <div className="quick-card-img-box">
-              <img src="/images/1_24e0b08d-b976-4af6-b1c3-25577607556f.webp" alt="CP Plus Camera" />
+              <img src="/images/05ee03a6-21de-4af2-a56d-0f70aaddc51d.png" alt="CP Plus Camera" />
             </div>
             <div className="quick-card-info">
               <h4>CP PLUS 360 Camera</h4>
